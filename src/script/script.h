@@ -10,7 +10,7 @@
 #include <crypto/common.h>
 #include <prevector.h>
 #include <serialize.h>
-#include <prime/bignum.h>
+#include <bignum.h>
 
 #include <assert.h>
 #include <climits>
