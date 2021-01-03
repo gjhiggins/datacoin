@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Copyright (c) 2012-2017 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -18,26 +18,26 @@ import random
 from binascii import b2a_hex
 
 # key types
-PUBKEY_ADDRESS = 0
-SCRIPT_ADDRESS = 5
-PUBKEY_ADDRESS_TEST = 111
-SCRIPT_ADDRESS_TEST = 196
-PRIVKEY = 128
-PRIVKEY_TEST = 239
+PUBKEY_ADDRESS = 30
+SCRIPT_ADDRESS = 90
+PUBKEY_ADDRESS_TEST = 70
+SCRIPT_ADDRESS_TEST = 132
+PRIVKEY = 158
+PRIVKEY_TEST = 198
 
-metadata_keys = ['isPrivkey', 'isTestnet', 'addrType', 'isCompressed']
+metadata_keys = ['isPrivkey', 'chain', 'addrType', 'isCompressed']
 # templates for valid sequences
 templates = [
   # prefix, payload_size, suffix, metadata
   #                                  None = N/A
-  ((PUBKEY_ADDRESS,),      20, (),   (False, False, 'pubkey', None)),
-  ((SCRIPT_ADDRESS,),      20, (),   (False, False, 'script',  None)),
-  ((PUBKEY_ADDRESS_TEST,), 20, (),   (False, True,  'pubkey', None)),
-  ((SCRIPT_ADDRESS_TEST,), 20, (),   (False, True,  'script',  None)),
-  ((PRIVKEY,),             32, (),   (True,  False, None,  False)),
-  ((PRIVKEY,),             32, (1,), (True,  False, None,  True)),
-  ((PRIVKEY_TEST,),        32, (),   (True,  True,  None,  False)),
-  ((PRIVKEY_TEST,),        32, (1,), (True,  True,  None,  True))
+  ((PUBKEY_ADDRESS,),      20, (),   (False, 'main', 'pubkey', None)),
+  ((SCRIPT_ADDRESS,),      20, (),   (False, 'main', 'script',  None)),
+  ((PUBKEY_ADDRESS_TEST,), 20, (),   (False, 'test', 'pubkey', None)),
+  ((SCRIPT_ADDRESS_TEST,), 20, (),   (False, 'test', 'script',  None)),
+  ((PRIVKEY,),             32, (),   (True,  'main', None,  False)),
+  ((PRIVKEY,),             32, (1,), (True,  'main', None,  True)),
+  ((PRIVKEY_TEST,),        32, (),   (True,  'test',  None,  False)),
+  ((PRIVKEY_TEST,),        32, (1,), (True,  'test',  None,  True))
 ]
 
 def is_valid(v):
@@ -46,8 +46,8 @@ def is_valid(v):
     if result is None:
         return False
     for template in templates:
-        prefix = str(bytearray(template[0]))
-        suffix = str(bytearray(template[2]))
+        prefix = bytearray(template[0])
+        suffix = bytearray(template[2])
         if result.startswith(prefix) and result.endswith(suffix):
             if (len(result) - len(prefix) - len(suffix)) == template[1]:
                 return True
@@ -57,20 +57,27 @@ def gen_valid_vectors():
     '''Generate valid test vectors'''
     while True:
         for template in templates:
-            prefix = str(bytearray(template[0]))
+            prefix = bytearray(template[0])
             payload = os.urandom(template[1]) 
-            suffix = str(bytearray(template[2]))
+            suffix = bytearray(template[2])
             rv = b58encode_chk(prefix + payload + suffix)
             assert is_valid(rv)
             metadata = dict([(x,y) for (x,y) in zip(metadata_keys,template[3]) if y is not None])
-            yield (rv, b2a_hex(payload), metadata)
+            hexrepr = b2a_hex(payload)
+            if isinstance(hexrepr, bytes):
+                hexrepr = hexrepr.decode('utf8')
+            if metadata.get('addrType', None) == 'script':
+                hexrepr = 'a914' + hexrepr + '87'
+            elif metadata.get('addrType', None) == 'pubkey':
+                hexrepr = '76a914' + hexrepr + '88ac'
+            yield (rv, hexrepr, metadata)
 
 def gen_invalid_vector(template, corrupt_prefix, randomize_payload_size, corrupt_suffix):
     '''Generate possibly invalid vector'''
     if corrupt_prefix:
         prefix = os.urandom(1)
     else:
-        prefix = str(bytearray(template[0]))
+        prefix = bytearray(template[0])
     
     if randomize_payload_size:
         payload = os.urandom(max(int(random.expovariate(0.5)), 50))
@@ -80,7 +87,7 @@ def gen_invalid_vector(template, corrupt_prefix, randomize_payload_size, corrupt
     if corrupt_suffix:
         suffix = os.urandom(len(template[2]))
     else:
-        suffix = str(bytearray(template[2]))
+        suffix = bytearray(template[2])
 
     return b58encode_chk(prefix + payload + suffix)
 
