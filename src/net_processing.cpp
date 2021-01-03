@@ -1393,29 +1393,31 @@ bool static ProcessHeadersMessage(CNode *pfrom, CConnman *connman, const std::ve
             return true;
         }
 
-        // NOTE: DATACOIN oldclient
         // A simple test for an old client To avoid getting here, you need to finish CBlock::GetBlockHeader() and CBlockIndex::GetBlockHeader()
         if (headers[0].bnPrimeChainMultiplier == 0) {
+            // NOTE: DATACOIN oldclient
+            // FIXME: Remove when 0.8 clients excluded.
+            // In the original client, the bnPrimeChainMultiplier is not copied to CBlock::GetBlockHeader() and CBlockIndex::GetBlockHeader ()
+            // Therefore, in the headers come empty bnPrimeChainMultiplier and you can not calculate the correct header. GetHash ()
+            // Therefore, just skip this check. It is not critical, but you can fix it.
             LogPrint(BCLog::NET, "Received non full headers. bnPrimeChainMultiplier == 0. Possibly an old client.\n"); // Call to getblocks\n");
-        // NOTE: DATACOIN oldclient
-        // FIXME: Remove when 0.8 clients excluded.
-        // In the original client, the bnPrimeChainMultiplier is not copied to CBlock::GetBlockHeader() and CBlockIndex::GetBlockHeader ()
-        // Therefore, in the headers come empty bnPrimeChainMultiplier and you can not calculate the correct header. GetHash ()
-        // Therefore, just skip this check. It is not critical, but you can fix it.
-        // uint256 hashLastBlock;
-        // for (const CBlockHeader& header : headers) {
-        //     if (!hashLastBlock.IsNull() && header.hashPrevBlock != hashLastBlock) {
-        //         Misbehaving(pfrom->GetId(), 20);
-        //         return error("non-continuous headers sequence");
-        //     }
-        //     hashLastBlock = header.GetHash();
-        // }
+        }
+        else
+        {
+            uint256 hashLastBlock;
+            for (const CBlockHeader& header : headers) {
+                if (!hashLastBlock.IsNull() && header.hashPrevBlock != hashLastBlock) {
+                    Misbehaving(pfrom->GetId(), 20);
+                    return error("non-continuous headers sequence");
+                }
+                hashLastBlock = header.GetHash();
+            }
 
-        // // If we don't have the last header, then they'll have given us
-        // // something new (if these headers are valid).
-        // if (mapBlockIndex.find(hashLastBlock) == mapBlockIndex.end()) {
-        //     received_new_header = true;
-        // }
+            // If we don't have the last header, then they'll have given us
+            // something new (if these headers are valid).
+            if (mapBlockIndex.find(hashLastBlock) == mapBlockIndex.end()) {
+                received_new_header = true;
+            }
         }
     }
 
