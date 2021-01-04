@@ -11,6 +11,7 @@
 #include <init.h>
 #include <util.h>
 #include <utilstrencodings.h>
+#include <validation.h>
 #include <wallet/wallet.h>
 #include <wallet/rpcwallet.h>
 #include <wallet/walletdb.h>
@@ -51,6 +52,34 @@ void Datastore::on_filePushButton_clicked()
 {
     fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "./", tr("All Files (*.*)"));
     ui->labelFile->setText(fileName);
+}
+
+void Datastore::on_viewLocalButton_clicked()
+{
+    std::string hashref = ui->txLineEdit->text().toStdString();
+    uint256 hash = uint256S(ui->txLineEdit->text().toUtf8().constData());
+    std::string tmpfilename = "/tmp/datacoin." + hashref;
+    std::ofstream tmpfile(tmpfilename, std::ios::out | std::ios::binary);
+
+    CTransactionRef tx;
+    uint256 hashBlock = uint256S("0");
+    if (GetTransaction(hash, tx, Params().GetConsensus(), hashBlock, true))
+    {
+        const std::vector<unsigned char> txdata = tx->data;
+        std::string strdata(txdata.begin(), txdata.end());
+        tmpfile << strdata;
+    }
+    tmpfile.close();
+    QString url = QString("file:///") + QString::fromStdString(tmpfilename);
+    QDesktopServices::openUrl(QUrl(url));
+    // unlink(tmpfilename.c_str());
+}
+
+void Datastore::on_viewBytestampButton_clicked()
+{
+    QString websitePath = "https://www2.bytestamp.net/blocks/qtx/en/";
+    QString websiteLink = "eab079e959d3f2371460460bd8abe52ab172bb679061a79e6d49ac20aa22b171";
+    QDesktopServices::openUrl(websitePath + websiteLink);
 }
 
 void Datastore::on_createPushButton_clicked()

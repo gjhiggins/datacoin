@@ -38,6 +38,8 @@ private:
   private Q_SLOTS:
     void on_filePushButton_clicked();
     void on_createPushButton_clicked();
+    void on_viewLocalButton_clicked();
+    void on_viewBytestampButton_clicked();
 
 };
 
