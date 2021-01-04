@@ -23,6 +23,7 @@
 #include <ui_interface.h>
 
 #include <qt/blockexplorer.h>
+#include <qt/datastore.h>
 #include <qt/miningpage.h>
 #include <qt/multisigdialog.h>
 #include <wallet/wallet.h>
@@ -119,6 +120,7 @@ void WalletView::setClientModel(ClientModel *_clientModel)
 
     overviewPage->setClientModel(_clientModel);
     sendCoinsPage->setClientModel(_clientModel);
+    // datastorePage->setClientModel(_clientModel);
 }
 
 void WalletView::setWalletModel(WalletModel *_walletModel)
@@ -128,6 +130,7 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
     // Put transaction list in tabs
     transactionView->setModel(_walletModel);
     miningPage->setModel(_walletModel);
+    // datastorePage->setModel(_walletModel);
     overviewPage->setWalletModel(_walletModel);
     receiveCoinsPage->setModel(_walletModel);
     sendCoinsPage->setModel(_walletModel);
@@ -188,20 +191,28 @@ void WalletView::gotoHistoryPage()
     setCurrentWidget(transactionsPage);
 }
 
-void WalletView::gotoMultisigDialog()
-{
-    MultisigDialog *multisigDialog = new MultisigDialog(platformStyle, this);
-    multisigDialog->setAttribute(Qt::WA_DeleteOnClose);
-    multisigDialog->setModel(walletModel);
-    multisigDialog->showDialog();
-}
-
 void WalletView::gotoBlockExplorerPage()
 {
     BlockExplorer *blockexplorerPage = new BlockExplorer(this);
     blockexplorerPage->setAttribute(Qt::WA_DeleteOnClose);
     // blockexplorerPage->setModel(walletModel);
     blockexplorerPage->show();
+}
+
+void WalletView::gotoDatastorePage()
+{
+    Datastore *datastorePage = new Datastore(this);
+    datastorePage->setAttribute(Qt::WA_DeleteOnClose);
+    datastorePage->setModel(walletModel);
+    datastorePage->show();
+}
+
+void WalletView::gotoMultisigDialog()
+{
+    MultisigDialog *multisigDialog = new MultisigDialog(platformStyle, this);
+    multisigDialog->setAttribute(Qt::WA_DeleteOnClose);
+    multisigDialog->setModel(walletModel);
+    multisigDialog->showDialog();
 }
 
 void WalletView::gotoMiningPage()

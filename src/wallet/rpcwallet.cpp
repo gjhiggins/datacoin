@@ -23,6 +23,7 @@
 #include <script/sign.h>
 #include <timedata.h>
 #include <util.h>
+#include <utilstrencodings.h>
 #include <utilmoneystr.h>
 #include <wallet/coincontrol.h>
 #include <wallet/feebumper.h>
@@ -532,8 +533,10 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
     std::string txdata;
     if (!request.params[8].isNull() && request.params[8].type() != UniValue::VNULL && !request.params[8].get_str().empty()) {
         txdata = request.params[8].get_str();
-        if (txdata.length() > MAX_TX_DATA_SIZE)
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "data chunk is too long. split it the payload to several transactions.");
+        // NOTE: DATACOIN removed. Size check will be performed later in CreateTransaction.
+        // std::vector<unsigned char> rawdata = DecodeBase64(txdata);
+        // if (rawdata.length() > MAX_TX_DATA_SIZE)
+        //     throw JSONRPCError(RPC_INVALID_PARAMETER, "data chunk is too long. split it the payload to several transactions.");
     }
 
     EnsureWalletIsUnlocked(pwallet);
@@ -562,8 +565,10 @@ UniValue senddata(const JSONRPCRequest& request)
     std::string txdata;
     if (request.params.size() > 0 && request.params[0].type() != UniValue::VNULL && !request.params[0].get_str().empty()) {
         txdata = request.params[0].get_str();
-        if (txdata.length() > MAX_TX_DATA_SIZE)
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "data chunk is too long. split it the payload to several transactions.");
+        // NOTE: DATACOIN removed. Size check will be performed later in CreateTransaction.
+        // std::vector<unsigned char> rawdata = DecodeBase64(txdata);
+        // if (rawdata.length() > MAX_TX_DATA_SIZE)
+        //     throw JSONRPCError(RPC_INVALID_PARAMETER, "data chunk is too long. split it the payload to several transactions.");
     }
 
 	EnsureWalletIsUnlocked(pwallet);
@@ -1074,8 +1079,10 @@ UniValue sendfrom(const JSONRPCRequest& request)
     std::string txdata;
     if (!request.params[6].isNull() && request.params[6].type() != UniValue::VNULL && !request.params[6].get_str().empty()) {
         txdata = request.params[6].get_str();
-        if (txdata.length() > MAX_TX_DATA_SIZE)
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "data chunk is too long. split it the payload to several transactions.");
+        // NOTE: DATACOIN removed. Size check will be performed later in CreateTransaction.
+        // std::vector<unsigned char> rawdata = DecodeBase64(txdata);
+        // if (rawdata.length() > MAX_TX_DATA_SIZE)
+        //     throw JSONRPCError(RPC_INVALID_PARAMETER, "data chunk is too long. split it the payload to several transactions.");
     }
 
     EnsureWalletIsUnlocked(pwallet);
@@ -1186,9 +1193,10 @@ UniValue sendmany(const JSONRPCRequest& request)
 
     std::string txdata;
     if (!request.params[8].isNull() && request.params[8].type() != UniValue::VNULL && !request.params[8].get_str().empty()) {
-       txdata = request.params[8].get_str();
-	    // NOTE: DATACOIN removed. Size check will be performed later in CreateTransaction.
-        // if (txdata.length() > MAX_TX_DATA_SIZE)
+        txdata = request.params[8].get_str();
+        // NOTE: DATACOIN removed. Size check will be performed later in CreateTransaction.
+        // std::vector<unsigned char> rawdata = DecodeBase64(txdata);
+        // if (rawdata.length() > MAX_TX_DATA_SIZE)
         //     throw JSONRPCError(RPC_INVALID_PARAMETER, "data chunk is too long. split it the payload to several transactions.");
     }
 

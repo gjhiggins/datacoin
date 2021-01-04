@@ -396,6 +396,9 @@ void BitcoinGUI::createActions()
     openBlockExplorerAction = new QAction(platformStyle->TextColorIcon(":/icons/explorer"), tr("&Blockchain"), this);
     openBlockExplorerAction->setStatusTip(tr("Block explorer window"));
 
+    openDatastoreAction = new QAction(platformStyle->TextColorIcon(":/icons/filesave"), tr("&Datastore"), this);
+    openDatastoreAction->setStatusTip(tr("Data storage"));
+
     openMultisigAction = new QAction(platformStyle->TextColorIcon(":/icons/multisig"), tr("&Multisig"), this);
     openMultisigAction->setStatusTip(tr("Multisig window"));
 
@@ -428,6 +431,7 @@ void BitcoinGUI::createActions()
         connect(usedReceivingAddressesAction, SIGNAL(triggered()), walletFrame, SLOT(usedReceivingAddresses()));
         connect(openAction, SIGNAL(triggered()), this, SLOT(openClicked()));
         connect(openBlockExplorerAction, SIGNAL(triggered()), walletFrame, SLOT(gotoBlockExplorerPage()));
+        connect(openDatastoreAction, SIGNAL(triggered()), walletFrame, SLOT(gotoDatastorePage()));
         connect(openMultisigAction, SIGNAL(triggered()), walletFrame, SLOT(gotoMultisigDialog()));
     }
 #endif // ENABLE_WALLET
@@ -476,6 +480,7 @@ void BitcoinGUI::createMenuBar()
     {
         help->addAction(openRPCConsoleAction);
         help->addAction(openBlockExplorerAction);
+        help->addAction(openDatastoreAction);
         help->addAction(openMultisigAction);
     }
     help->addAction(showHelpMessageAction);
@@ -606,6 +611,7 @@ void BitcoinGUI::setWalletActionsEnabled(bool enabled)
     usedReceivingAddressesAction->setEnabled(enabled);
     openAction->setEnabled(enabled);
     openBlockExplorerAction->setEnabled(enabled);
+    openDatastoreAction->setEnabled(enabled);
     openMultisigAction->setEnabled(enabled);
 }
 
@@ -653,6 +659,7 @@ void BitcoinGUI::createTrayIconMenu()
     trayIconMenu->addAction(optionsAction);
     trayIconMenu->addAction(openRPCConsoleAction);
     trayIconMenu->addAction(openBlockExplorerAction);
+    trayIconMenu->addAction(openDatastoreAction);
     trayIconMenu->addAction(openMultisigAction);
 #ifndef Q_OS_MAC // This is built-in on Mac
     trayIconMenu->addSeparator();
@@ -746,6 +753,11 @@ void BitcoinGUI::gotoMiningPage()
 void BitcoinGUI::gotoBlockExplorerPage()
 {
     if (walletFrame) walletFrame->gotoBlockExplorerPage();
+}
+
+void BitcoinGUI::gotoDatastorePage()
+{
+    if (walletFrame) walletFrame->gotoDatastorePage();
 }
 
 void BitcoinGUI::gotoMultisigDialog()

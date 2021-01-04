@@ -80,6 +80,8 @@ public Q_SLOTS:
     void gotoHistoryPage();
     /** Switch to Explorer page */
     void gotoBlockExplorerPage();
+    /** Switch to Data store page */
+    void gotoDatastorePage();
     /** Switch to mining page */
     void gotoMiningPage();
     /** Switch to Multisig Dialog */

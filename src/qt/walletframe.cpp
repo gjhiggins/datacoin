@@ -132,6 +132,13 @@ void WalletFrame::gotoBlockExplorerPage()
         walletView->gotoBlockExplorerPage();
 }
 
+void WalletFrame::gotoDatastorePage()
+{
+    WalletView *walletView = currentWalletView();
+    if (walletView)
+        walletView->gotoDatastorePage();
+}
+
 void WalletFrame::gotoMiningPage()
 {
     QMap<QString, WalletView*>::const_iterator i;

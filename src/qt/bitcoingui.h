@@ -115,6 +115,7 @@ private:
     QAction *openAction;
     QAction *showHelpMessageAction;
     QAction *openBlockExplorerAction;
+    QAction *openDatastoreAction;
     QAction *openMultisigAction;
 
     QSystemTrayIcon *trayIcon;
@@ -210,6 +211,8 @@ private Q_SLOTS:
     void gotoMiningPage();
     /** Switch to Explorer Page */
     void gotoBlockExplorerPage(); 
+    /** Switch to Data store Page */
+    void gotoDatastorePage(); 
     /** Switch to Multisig Dialog */
     void gotoMultisigDialog();
     /** Switch to receive coins page */

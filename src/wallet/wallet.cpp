@@ -2699,7 +2699,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
 	
     // transaction data
     if (txdecdata.size() > MAX_TX_DATA_SIZE) {
-        strFailReason = _("txData is too long");
+        strFailReason = _("txData size exceeds 128Kb limit");
         return false;
     }
 	
