@@ -1,6 +1,7 @@
 /****************************************************************************
 ****************************************************************************/
 #include <qt/datastore.h>
+#include <qt/detector.h>
 #include <qt/forms/ui_datastore.h>
 #include <qt/guiutil.h>
 #include <qt/bitcoingui.h>
@@ -19,6 +20,8 @@
 #include <QDebug>
 #include <QDialog>
 #include <QFile>
+#include <QTemporaryFile>
+#include <QDataStream>
 #include <QTextStream>
 #include <QList>
 #include <QFileDialog>
@@ -58,21 +61,31 @@ void Datastore::on_viewLocalButton_clicked()
 {
     std::string hashref = ui->txLineEdit->text().toStdString();
     uint256 hash = uint256S(ui->txLineEdit->text().toUtf8().constData());
-    std::string tmpfilename = "/tmp/datacoin." + hashref;
-    std::ofstream tmpfile(tmpfilename, std::ios::out | std::ios::binary);
-
     CTransactionRef tx;
     uint256 hashBlock = uint256S("0");
+
     if (GetTransaction(hash, tx, Params().GetConsensus(), hashBlock, true))
     {
         const std::vector<unsigned char> txdata = tx->data;
-        std::string strdata(txdata.begin(), txdata.end());
-        tmpfile << strdata;
+        boost::filesystem::path dest = boost::filesystem::temp_directory_path() /= boost::filesystem::unique_path();
+        const std::string deststr = dest.native();
+        std::fstream tmpfile(deststr, std::ios::out | std::ios::binary);
+        tmpfile.write((const char*)&txdata[0], txdata.size());
+        tmpfile.close();
+
+        std::fstream tempfile(deststr, std::ios::in | std::ios::binary);
+        Detector *d = new Detector();
+        std::string mimetype = d->detect(tempfile);
+        tmpfile.close();
+        std::string::size_type n = mimetype.rfind('/');
+        std::string ext = "." + mimetype.substr(n + 1, mimetype.size() - n);
+        boost::filesystem::path destext = boost::filesystem::path(deststr + ext);
+        boost::filesystem::rename(dest, destext);
+        QString url = QString("file:///") + QString::fromStdString(destext.c_str());
+        QDesktopServices::openUrl(QUrl(url));
+        sleep(5);
+        boost::filesystem::remove(destext);
     }
-    tmpfile.close();
-    QString url = QString("file:///") + QString::fromStdString(tmpfilename);
-    QDesktopServices::openUrl(QUrl(url));
-    // unlink(tmpfilename.c_str());
 }
 
 void Datastore::on_viewBytestampButton_clicked()
