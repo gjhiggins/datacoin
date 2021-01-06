@@ -28,6 +28,7 @@
 #include <QDesktopServices>
 
 #include <fstream>
+#include <sstream>
 
 Datastore::Datastore(QWidget *parent) :
     QDialog(parent),
@@ -68,7 +69,12 @@ void Datastore::on_viewLocalButton_clicked()
     {
         const std::vector<unsigned char> txdata = tx->data;
         boost::filesystem::path dest = boost::filesystem::temp_directory_path() /= boost::filesystem::unique_path();
+#ifdef WIN32
+        QString w0 = QString::fromStdWString(dest.c_str());
+        const std::string deststr = w0.toStdString();
+#else
         const std::string deststr = dest.native();
+#endif
         std::fstream tmpfile(deststr, std::ios::out | std::ios::binary);
         tmpfile.write((const char*)&txdata[0], txdata.size());
         tmpfile.close();
@@ -76,12 +82,21 @@ void Datastore::on_viewLocalButton_clicked()
         std::fstream tempfile(deststr, std::ios::in | std::ios::binary);
         Detector *d = new Detector();
         std::string mimetype = d->detect(tempfile);
-        tmpfile.close();
+        tempfile.close();
         std::string::size_type n = mimetype.rfind('/');
         std::string ext = "." + mimetype.substr(n + 1, mimetype.size() - n);
+
         boost::filesystem::path destext = boost::filesystem::path(deststr + ext);
+#ifdef WIN32
+        QString w1 = QString::fromStdWString(destext.c_str());
+        const std::string destextstr = w1.toStdString();
+#endif
         boost::filesystem::rename(dest, destext);
+#ifdef WIN32
+        QString url = QString("file:///") + QString::fromStdWString(destext.c_str());
+#else
         QString url = QString("file:///") + QString::fromStdString(destext.c_str());
+#endif
         QDesktopServices::openUrl(QUrl(url));
         sleep(5);
         boost::filesystem::remove(destext);
