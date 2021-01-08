@@ -65,7 +65,23 @@ public:
     /// \return std::string
     std::string detect(std::fstream& file) {
         std::string hex = get_magic_hex(file);
-        std::cout << "Magic hex: " << hex << std::endl;
+        // std::cout << "Magic hex: " << hex << std::endl;
+        std::string mime = detect_from_hex(hex);
+        if (!mime.empty()) {
+            return mime;
+        }
+
+        return "application/octet-stream";
+    }
+
+    /// Detect mimetype based on raw data
+    ///
+    /// \param[in] std::vector<unsigned char> Data to detect
+    ///
+    /// \return std::string
+    std::string detect(const std::vector<unsigned char>& data) {
+        std::string hex = get_magic_hex(data);
+        // std::cout << "Magic hex: " << hex << std::endl;
         std::string mime = detect_from_hex(hex);
         if (!mime.empty()) {
             return mime;
@@ -107,6 +123,25 @@ private:
         std::stringstream ss;
         for (int i = 0; i < (int)max_length; i++) {
             ss << std::hex << std::setfill('0') << std::setw(2) << std::uppercase << static_cast<int>(x[i] & 0xff);
+        }
+        return ss.str();
+    }
+
+    /// Get magic hex number from given data
+    ///
+    /// \param[in] std::vector<unsigned char>& data Data to read magic number from
+    ///
+    /// \return std::string
+    std::string get_magic_hex(const std::vector<unsigned char>& data) {
+        std::size_t max_length = m_hex_types.front().first.length();
+        if (data.size() < max_length) {
+            max_length = data.size();
+        }
+        // char* x = new char[max_length];
+        // file.read(x, max_length);
+        std::stringstream ss;
+        for (int i = 0; i < (int)max_length; i++) {
+            ss << std::hex << std::setfill('0') << std::setw(2) << std::uppercase << static_cast<int>(data[i] & 0xff);
         }
         return ss.str();
     }
@@ -294,7 +329,7 @@ private:
         {"ico", "image/x-icon"},
         {"pnm", "image/x-portable-anymap"},
         {"pbm", "image/x-portable-bitmap"},
-        {"{pgm", "image/x-portable-graymap"},
+        {"pgm", "image/x-portable-graymap"},
         {"ppm", "image/x-portable-pixmap"},
         {"rgb", "image/x-rgb"},
         {"xbm", "image/x-xbitmap"},
@@ -350,12 +385,19 @@ private:
     /// HEX magic number -> mime type mapping
     std::vector<std::pair<std::string, std::string>> m_hex_types = {
         {"667479703367", "video/3gpp"},
-        {"377ABCAF271C", "application/x-7z-compressed"},
         {"464F524D(.*){8}41494646", "audio/x-aiff"},
         {"3026B2758E66CF11A6D900AA0062CE6C", "audio/x-ms-wma"},
         {"52494646(.*){8}41564920", "video/x-msvideo"},
         {"424D", "image/bmp"},
         {"425A68", "application/x-bzip2"},
+        {"FD377A585A000004E6D6B446", "application/x-lzh"},
+        {"377ABCAF271C", "application/x-7z-compressed"},
+        {"1F8B", "application/gzip"},
+        {"526172211A070100", "application/x-rar-compressed"},
+        {"526172211A0700", "application/x-rar-compressed"},
+        {"504B0304", "application/zip"},
+        {"504B0506", "application/zip"},
+        {"504B0708", "application/zip"},
         {"4D534346", "application/vnd.ms-cab-compressed"},
         {"CAFEBABE", "application/java-vm"},
         {"213C617263683E", "application/x-debian-package"},
@@ -365,7 +407,6 @@ private:
         {"4D5A", "application/x-msdownload"},
         {"474946383761", "image/gif"},
         {"474946383961", "image/gif"},
-        {"1F8B", "application/gzip"},
         {"00000100", "image/x-icon"},
         {"FFD8FFDB", "image/jpg"},
         {"FFD8FFE0(.*){4}4A4649460001", "image/jpeg"},
@@ -381,8 +422,6 @@ private:
         {"25504446", "application/pdf"},
         {"89504E470D0A1A0A", "image/png"},
         {"38425053", "image/vnd.adobe.photoshop"},
-        {"526172211A070100", "application/x-rar-compressed"},
-        {"526172211A0700", "application/x-rar-compressed"},
         {"7B5C72746631", "application/rtf"},
         {"435753", "application/x-shockwave-flash"},
         {"465753", "application/x-shockwave-flash"},
@@ -394,10 +433,10 @@ private:
         {"52494646(.*){8}57454250", "image/webp"},
         {"774F4646", "application/x-font-woff"},
         {"3c3f786d6c20", "application/xml"},
-        {"504B0304", "application/zip"},
-        {"504B0506", "application/zip"},
         {"3C21444F4354595045206874", "text/html"},
-        {"504B0708", "application/zip"}};
+        {"4070726566697820666F6166", "application/x-turtle"},
+        {"3C3F786D6C2076657273696F", "application/rdf+xml"}
+    };
 };
 
 #endif // FILE_MIME_DETECTOR_H_

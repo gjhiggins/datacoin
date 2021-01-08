@@ -34,6 +34,8 @@ private:
     WalletModel *model;
     QFile *file;
     void noFileSelected();
+    std::string unzip(std::vector<unsigned char>);
+
 
   private Q_SLOTS:
     void on_filePushButton_clicked();

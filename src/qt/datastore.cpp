@@ -27,8 +27,100 @@
 #include <QFileDialog>
 #include <QDesktopServices>
 
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
+#include <zlib.h>
+
 #include <fstream>
 #include <sstream>
+#include <iostream>
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
+
+
+/// mime type -> extension mapping
+std::map<std::string, std::string> extension_map = {
+    {"application/pdf", ".pdf"},
+    {"image/svg+xml", ".svg"},
+    {"audio/x-aiff", ".aiff"},
+    {"audio/x-wav", ".wav"},
+    {"application/ogg", ".ogg"},
+    {"audio/mpeg", ".mp3"},
+    {"video/mpeg", ".mpg"},
+    {"video/mp4", ".mp4"},
+    {"text/html", ".html"},
+    {"application/x-bzip2", ".bzip2"},
+    {"application/x-lzh", ".lzh"},
+    {"application/x-7z-compressed", ".7z"},
+    {"application/xml", ".xml"},
+    {"application/x-turtle", ".ttl"},
+    {"application/rdf+xml", ".xml"}
+};
+
+static QByteArray gUncompress(const QByteArray &data)
+/* Solution courtesy of Ralf - https://stackoverflow.com/a/7351507 */
+{
+    if (data.size() <= 4) {
+        qWarning("gUncompress: Input data is truncated");
+        return QByteArray();
+    }
+
+    QByteArray result;
+
+    int ret;
+    z_stream strm;
+    static const int CHUNK_SIZE = 1024;
+    char out[CHUNK_SIZE];
+
+    /* allocate inflate state */
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    strm.avail_in = data.size();
+    strm.next_in = (Bytef*)(data.data());
+
+    ret = inflateInit2(&strm, 15 +  32); // gzip decoding
+    if (ret != Z_OK)
+        return QByteArray();
+
+    // run inflate()
+    do {
+        strm.avail_out = CHUNK_SIZE;
+        strm.next_out = (Bytef*)(out);
+
+        ret = inflate(&strm, Z_NO_FLUSH);
+        Q_ASSERT(ret != Z_STREAM_ERROR);  // state not clobbered
+
+        switch (ret) {
+        case Z_NEED_DICT:
+            ret = Z_DATA_ERROR;     // and fall through
+        case Z_DATA_ERROR:
+        case Z_MEM_ERROR:
+            (void)inflateEnd(&strm);
+            return QByteArray();
+        }
+
+        result.append(out, CHUNK_SIZE - strm.avail_out);
+    } while (strm.avail_out == 0);
+
+    // clean up and return
+    inflateEnd(&strm);
+    return result;
+}
+
+std::vector<unsigned char> uncompressdata(std::vector<unsigned char> txdata) {
+    std::string strdata(txdata.begin(), txdata.end());
+    QByteArray compressed_data = QByteArray::fromStdString(strdata);
+    QByteArray uncompressed_data_array = gUncompress(compressed_data);
+    std::string uncompressed_datastr = uncompressed_data_array.toStdString();
+    std::vector<unsigned char> vector_of_uncompressed_data(uncompressed_datastr.begin(), uncompressed_datastr.end());
+    return vector_of_uncompressed_data;
+}
 
 Datastore::Datastore(QWidget *parent) :
     QDialog(parent),
@@ -60,53 +152,86 @@ void Datastore::on_filePushButton_clicked()
 
 void Datastore::on_viewLocalButton_clicked()
 {
-    std::string hashref = ui->txLineEdit->text().toStdString();
+    std::string ext;
+    std::vector<unsigned char> vuncompressed_data;
+    bool compressed = false;
     uint256 hash = uint256S(ui->txLineEdit->text().toUtf8().constData());
     CTransactionRef tx;
     uint256 hashBlock = uint256S("0");
 
-    if (GetTransaction(hash, tx, Params().GetConsensus(), hashBlock, true))
+    if (!GetTransaction(hash, tx, Params().GetConsensus(), hashBlock, true))
+        return;
+
+    boost::filesystem::path dest = boost::filesystem::temp_directory_path() /= boost::filesystem::unique_path();
+#ifdef WIN32
+    /* Windows doesn't do native() */
+    QString w0 = QString::fromStdWString(dest.c_str());
+    const std::string deststr = w0.toStdString();
+#else
+    const std::string deststr = dest.native();
+#endif
+
+    const std::vector<unsigned char> txdata = tx->data;
+    Detector *d = new Detector();
+    std::string mimetype = d->detect(txdata);
+    if (fDebug)
+        LogPrintf("txid %s, mimetype of stored data: %s\n", ui->txLineEdit->text().toStdString(), mimetype);
+
+    if ((mimetype == "application/gzip") || (mimetype == "application/zip"))
     {
-        const std::vector<unsigned char> txdata = tx->data;
-        boost::filesystem::path dest = boost::filesystem::temp_directory_path() /= boost::filesystem::unique_path();
-#ifdef WIN32
-        QString w0 = QString::fromStdWString(dest.c_str());
-        const std::string deststr = w0.toStdString();
-#else
-        const std::string deststr = dest.native();
-#endif
-        std::fstream tmpfile(deststr, std::ios::out | std::ios::binary);
-        tmpfile.write((const char*)&txdata[0], txdata.size());
-        tmpfile.close();
-
-        std::fstream tempfile(deststr, std::ios::in | std::ios::binary);
-        Detector *d = new Detector();
-        std::string mimetype = d->detect(tempfile);
-        tempfile.close();
-        std::string::size_type n = mimetype.rfind('/');
-        std::string ext = "." + mimetype.substr(n + 1, mimetype.size() - n);
-
-        boost::filesystem::path destext = boost::filesystem::path(deststr + ext);
-#ifdef WIN32
-        QString w1 = QString::fromStdWString(destext.c_str());
-        const std::string destextstr = w1.toStdString();
-#endif
-        boost::filesystem::rename(dest, destext);
-#ifdef WIN32
-        QString url = QString("file:///") + QString::fromStdWString(destext.c_str());
-#else
-        QString url = QString("file:///") + QString::fromStdString(destext.c_str());
-#endif
-        QDesktopServices::openUrl(QUrl(url));
-        sleep(5);
-        boost::filesystem::remove(destext);
+        compressed = true;
+        vuncompressed_data = uncompressdata(txdata);
+        std::string uncompressed_mimetype = d->detect(vuncompressed_data);
+        if (extension_map.find(uncompressed_mimetype) != extension_map.end())
+            ext = extension_map[uncompressed_mimetype];
+        else
+            ext = ".txt";
     }
+    else {
+        if (extension_map.find(mimetype) != extension_map.end())
+            ext = extension_map[mimetype];
+        else {
+            std::string::size_type n = mimetype.rfind('/');
+            ext = "." + mimetype.substr(n + 1, mimetype.size() - n);
+        }
+    }
+
+    boost::filesystem::path destext = boost::filesystem::path(deststr + ext);
+    // std::cout << "Dest+ext: " << destext.c_str() << std::endl;
+    std::fstream tmpfile(destext.c_str(), std::ios::out | std::ios::binary);
+    if (compressed)
+        tmpfile.write((const char*)&vuncompressed_data[0], vuncompressed_data.size());
+    else
+        tmpfile.write((const char*)&txdata[0], txdata.size());
+    tmpfile.close();
+
+#ifdef WIN32
+    QString url = QString("file:///") + QString::fromStdWString(destext.c_str());
+#else
+    QString url = QString("file:///") + QString::fromStdString(destext.c_str());
+#endif
+    QDesktopServices::openUrl(QUrl(url));
+    sleep(5);
+    boost::filesystem::remove(destext);
 }
 
 void Datastore::on_viewBytestampButton_clicked()
 {
+    if (ui->txLineEdit->text().isEmpty())
+        return;
+
     QString websitePath = "https://www2.bytestamp.net/blocks/qtx/en/";
-    QString websiteLink = "eab079e959d3f2371460460bd8abe52ab172bb679061a79e6d49ac20aa22b171";
+    CTransactionRef tx;
+    uint256 hashBlock = uint256S("0");
+
+    std::string hashref = ui->txLineEdit->text().toStdString();
+    uint256 hash = uint256S(ui->txLineEdit->text().toUtf8().constData());
+
+    if (!GetTransaction(hash, tx, Params().GetConsensus(), hashBlock, true))
+        return;
+
+    // QString websiteLink = ui->txLineEdit->text();
+    QString websiteLink = QString::fromStdString(hashref);
     QDesktopServices::openUrl(websitePath + websiteLink);
 }
 
