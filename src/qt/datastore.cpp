@@ -197,8 +197,14 @@ void Datastore::on_viewLocalButton_clicked()
     }
 
     boost::filesystem::path destext = boost::filesystem::path(deststr + ext);
-    // std::cout << "Dest+ext: " << destext.c_str() << std::endl;
-    std::fstream tmpfile(destext.c_str(), std::ios::out | std::ios::binary);
+#ifdef WIN32
+    QString w1 = QString::fromStdWString(destext.c_str());
+    const std::string destextstr = w1.toStdString();
+#else
+    const std::string destextstr = destext.native();
+#endif
+
+    std::fstream tmpfile(destextstr, std::ios::out | std::ios::binary);
     if (compressed)
         tmpfile.write((const char*)&vuncompressed_data[0], vuncompressed_data.size());
     else
