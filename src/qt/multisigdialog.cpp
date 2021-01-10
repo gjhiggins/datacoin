@@ -560,15 +560,13 @@ void MultisigDialog::on_sendTransactionButton_clicked()
     if (!AcceptToMemoryPool(mempool, state, tx, &fMissingInputs /* pfMissingInputs */, nullptr /* plTxnReplaced */, false /* bypass_limits */, 0 /* nAbsurdFee */))
         return;
 
-
-
     CInv inv(MSG_TX, tx->GetHash());
     g_connman->ForEachNode([&inv](CNode* pnode)
     {
         pnode->PushInventory(inv);
     });
 
-    ui->statusLabel->setText(tr("The transaction is sent to Gapcoin network."));
+    ui->statusLabel->setText(tr("The transaction is sent to Datacoin network."));
 }
 
 MultisigInputEntry * MultisigDialog::addInput()

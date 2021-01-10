@@ -697,8 +697,8 @@ UniValue getblockheader(const JSONRPCRequest& request)
             "\nResult (for verbose=false):\n"
             "\"data\"             (string) A string that is serialized, hex-encoded data for block 'hash'.\n"
             "\nExamples:\n"
-            + HelpExampleCli("getblockheader", "\"00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09\"")
-            + HelpExampleRpc("getblockheader", "\"00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09\"")
+            + HelpExampleCli("getblockheader", "\"3a4e553a9341c4a25f2c1c997cb62202be89cf9a2e8cb4d9d1360cc44dabbc29\"")
+            + HelpExampleRpc("getblockheader", "\"3a4e553a9341c4a25f2c1c997cb62202be89cf9a2e8cb4d9d1360cc44dabbc29\"")
         );
 
     LOCK(cs_main);
@@ -773,8 +773,8 @@ UniValue getblock(const JSONRPCRequest& request)
             "  ,...                     Same output as verbosity = 1.\n"
             "}\n"
             "\nExamples:\n"
-            + HelpExampleCli("getblock", "\"00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09\"")
-            + HelpExampleRpc("getblock", "\"00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09\"")
+            + HelpExampleCli("getblock", "\"3a4e553a9341c4a25f2c1c997cb62202be89cf9a2e8cb4d9d1360cc44dabbc29\"")
+            + HelpExampleRpc("getblock", "\"3a4e553a9341c4a25f2c1c997cb62202be89cf9a2e8cb4d9d1360cc44dabbc29\"")
         );
 
     LOCK(cs_main);
@@ -1001,8 +1001,8 @@ UniValue gettxout(const JSONRPCRequest& request)
             "     \"hex\" : \"hex\",        (string) \n"
             "     \"reqSigs\" : n,          (numeric) Number of required signatures\n"
             "     \"type\" : \"pubkeyhash\", (string) The type, eg pubkeyhash\n"
-            "     \"addresses\" : [          (array of string) array of datacoin addresses\n"
-            "        \"address\"     (string) datacoin address\n"
+            "     \"addresses\" : [          (array of string) array of Datacoin addresses\n"
+            "        \"address\"     (string) Datacoin address\n"
             "        ,...\n"
             "     ]\n"
             "  },\n"
@@ -2004,8 +2004,8 @@ UniValue renderblockhash(const JSONRPCRequest& request)
             "\nResult:\n"
             "RDF graph serialized as N-triples\n"
             "\nExamples:\n"
-            + HelpExampleCli("renderblockhash", "\"e798f3ae4f57adcf25740fe43100d95ec4fd5d43a1568bc89e2b25df89ff6cb0\"")
-            + HelpExampleRpc("renderblockhash", "\"e798f3ae4f57adcf25740fe43100d95ec4fd5d43a1568bc89e2b25df89ff6cb0\"")
+            + HelpExampleCli("renderblockhash", "\"3a4e553a9341c4a25f2c1c997cb62202be89cf9a2e8cb4d9d1360cc44dabbc29\"")
+            + HelpExampleRpc("renderblockhash", "\"3a4e553a9341c4a25f2c1c997cb62202be89cf9a2e8cb4d9d1360cc44dabbc29\"")
         );
 
     LOCK(cs_main);
