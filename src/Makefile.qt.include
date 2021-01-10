@@ -240,7 +240,6 @@ BITCOIN_QT_H = \
   qt/coincontroltreewidget.h \
   qt/csvmodelwriter.h \
   qt/datastore.h \
-  qt/detector.h \
   qt/editaddressdialog.h \
   qt/guiconstants.h \
   qt/guiutil.h \

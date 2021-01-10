@@ -99,6 +99,7 @@ BITCOIN_CORE_H = \
   core_io.h \
   core_memusage.h \
   cuckoocache.h \
+  detector.h \
   fs.h \
   httprpc.h \
   httpserver.h \

@@ -1,12 +1,12 @@
 /****************************************************************************
 ****************************************************************************/
 #include <qt/datastore.h>
-#include <qt/detector.h>
 #include <qt/forms/ui_datastore.h>
 #include <qt/guiutil.h>
 #include <qt/bitcoingui.h>
 
 #include <base58.h>
+#include <detector.h>
 #include <hash.h>
 #include <key.h>
 #include <init.h>
@@ -30,18 +30,7 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
-#include <boost/iostreams/filtering_streambuf.hpp>
-#include <boost/iostreams/copy.hpp>
-#include <boost/iostreams/filter/gzip.hpp>
 #include <zlib.h>
-
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <boost/iostreams/filtering_streambuf.hpp>
-#include <boost/iostreams/copy.hpp>
-#include <boost/iostreams/filter/zlib.hpp>
-
 
 /// mime type -> extension mapping
 std::map<std::string, std::string> extension_map = {

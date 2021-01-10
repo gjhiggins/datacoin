@@ -6,6 +6,7 @@
 #include <chain.h>
 #include <chainparams.h>
 #include <core_io.h>
+#include <detector.h>
 #include <primitives/block.h>
 #include <primitives/transaction.h>
 #include <validation.h>
@@ -19,8 +20,27 @@
 #include <version.h>
 
 #include <boost/algorithm/string.hpp>
+//#include <sstream>
+//#include <fstream>
+//#include <iostream>
+//#include <boost/iostreams/filtering_streambuf.hpp>
+//#include <boost/iostreams/copy.hpp>
+//#include <boost/iostreams/filter/gzip.hpp>
+//#include <zlib.h>
 
 #include <univalue.h>
+
+//static std::string uncompressdata(const std::vector<unsigned char> txdata) {
+//    // ifstream file("a.z", ios_base::in | ios_base::binary);
+//    boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
+//    in.push(boost::iostreams::zlib_decompressor());
+//    in.push(txdata);
+
+//    stringstream sstr;
+//    boost::iostreams::copy(in, sstr);
+//    cout << sstr.str() << endl;
+//    ASSERT_EQ(sstr.str(), string("nihao"));
+//}
 
 static const size_t MAX_GETUTXOS_OUTPOINTS = 15; //allow a max of 15 outpoints to be queried at once
 
@@ -29,6 +49,7 @@ enum RetFormat {
     RF_BINARY,
     RF_HEX,
     RF_JSON,
+    RF_HTML,
 };
 
 static const struct {
@@ -39,6 +60,7 @@ static const struct {
       {RF_BINARY, "bin"},
       {RF_HEX, "hex"},
       {RF_JSON, "json"},
+      {RF_HTML, "html"},
 };
 
 struct CCoin {
@@ -570,11 +592,67 @@ static bool rest_getutxos(HTTPRequest* req, const std::string& strURIPart)
     }
 }
 
+static bool rest_txdata(HTTPRequest* req, const std::string& strURIPart)
+{
+    if (!CheckWarmup(req))
+        return false;
+    std::string hashStr;
+    const RetFormat rf = ParseDataFormat(hashStr, strURIPart);
+
+    // Trim extension off end of hash
+    if (rf == RF_UNDEF) {
+        const std::string::size_type pos = hashStr.rfind('.');
+        if (pos != std::string::npos)
+            hashStr = hashStr.substr(0, pos);
+    }
+
+    uint256 hash;
+    if (!ParseHashStr(hashStr, hash))
+        return RESTERR(req, HTTP_BAD_REQUEST, "Invalid hash: " + hashStr);
+
+    CTransactionRef tx;
+    uint256 hashBlock = uint256();
+    if (!GetTransaction(hash, tx, Params().GetConsensus(), hashBlock, true))
+        return RESTERR(req, HTTP_NOT_FOUND, hashStr + " not found");
+
+    const std::vector<unsigned char> txdata = tx->data;
+
+    switch (rf) {
+        case RF_UNDEF: {
+            Detector *d = new Detector();
+            std::string mimetype = d->detect(txdata);
+            std::string binaryData(txdata.begin(), txdata.end());
+            req->WriteHeader("Content-Type", mimetype);
+            req->WriteReply(HTTP_OK, binaryData);
+            return true;
+        }
+
+        case RF_JSON: {
+            std::string strJSON(txdata.begin(), txdata.end());
+            req->WriteHeader("Content-Type", "application/ld+json");
+            req->WriteReply(HTTP_OK, strJSON);
+            return true;
+        }
+
+        case RF_HTML: {
+            std::string strHTML(txdata.begin(), txdata.end());
+            req->WriteHeader("Content-Type", "text/html");
+            req->WriteReply(HTTP_OK, strHTML);
+            return true;
+        }
+
+        default: {
+            return RESTERR(req, HTTP_NOT_FOUND, "output format not found (available: html, json)");
+        }
+    }
+}
+
 static const struct {
     const char* prefix;
     bool (*handler)(HTTPRequest* req, const std::string& strReq);
 } uri_prefixes[] = {
       {"/rest/tx/", rest_tx},
+      {"/rest/txdata/", rest_txdata},
       {"/rest/block/notxdetails/", rest_block_notxdetails},
       {"/rest/block/", rest_block_extended},
       {"/rest/chaininfo", rest_chaininfo},
