@@ -55,14 +55,6 @@ void HashRateGraphWidget::initGraph(QPainter& painter)
 
 int64_t HashRateGraphWidget::getHashRate()
 {
-//    switch (graphType) {
-//    case GraphType::MINER_CPU_HASHRATE:
-//        return GetCPUHashRate();
-//    case GraphType::MINER_GPU_HASHRATE:
-//        return GetGPUHashRate();
-//    default:
-//        return GetHashRate();
-//    }
     if (GetTimeMillis() - nHPSTimerStart > 8000)
         return (int64_t)0;
     return (int64_t)dPrimesPerSec;
