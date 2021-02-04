@@ -50,6 +50,8 @@ enum RetFormat {
     RF_HEX,
     RF_JSON,
     RF_HTML,
+    RF_CSS,
+    RF_JS,
 };
 
 static const struct {
@@ -61,6 +63,8 @@ static const struct {
       {RF_HEX, "hex"},
       {RF_JSON, "json"},
       {RF_HTML, "html"},
+      {RF_CSS, "css"},
+      {RF_JS, "js"},
 };
 
 struct CCoin {
@@ -641,8 +645,22 @@ static bool rest_txdata(HTTPRequest* req, const std::string& strURIPart)
             return true;
         }
 
+        case RF_CSS: {
+            std::string strCSS(txdata.begin(), txdata.end());
+            req->WriteHeader("Content-Type", "text/css");
+            req->WriteReply(HTTP_OK, strCSS);
+            return true;
+        }
+
+        case RF_JS: {
+            std::string strJS(txdata.begin(), txdata.end());
+            req->WriteHeader("Content-Type", "text/javascript");
+            req->WriteReply(HTTP_OK, strJS);
+            return true;
+        }
+
         default: {
-            return RESTERR(req, HTTP_NOT_FOUND, "output format not found (available: html, json)");
+            return RESTERR(req, HTTP_NOT_FOUND, "output format not found (available: html, css, js, json)");
         }
     }
 }
