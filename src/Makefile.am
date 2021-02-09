@@ -405,7 +405,7 @@ datacoind_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-datacoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) -lgmp -lprotobuf
+datacoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) -lgmp -lprotobuf -lz
 
 # bitcoin-cli binary #
 datacoin_cli_SOURCES = bitcoin-cli.cpp
@@ -453,7 +453,7 @@ datacoin_tx_LDADD = \
   $(MINIUPNPC_LIBS) \
   $(EVENT_LIBS)
 
-datacoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(BDB_LIBS) $(ZMQ_LIBS) -lgmp
+datacoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(BDB_LIBS) $(ZMQ_LIBS) -lgmp -lz
 #
 
 # bitcoinconsensus library #

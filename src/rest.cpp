@@ -20,27 +20,46 @@
 #include <version.h>
 
 #include <boost/algorithm/string.hpp>
-//#include <sstream>
-//#include <fstream>
-//#include <iostream>
-//#include <boost/iostreams/filtering_streambuf.hpp>
-//#include <boost/iostreams/copy.hpp>
-//#include <boost/iostreams/filter/gzip.hpp>
-//#include <zlib.h>
+#include <zlib.h>
 
 #include <univalue.h>
 
-//static std::string uncompressdata(const std::vector<unsigned char> txdata) {
-//    // ifstream file("a.z", ios_base::in | ios_base::binary);
-//    boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
-//    in.push(boost::iostreams::zlib_decompressor());
-//    in.push(txdata);
+/** Decompress an STL string using zlib and return the original data.
+    Courtesy https://panthema.net/2007/0328-ZLibString.html
+*/
+static std::string decompress_string(const std::string& str)
+{
+    z_stream zs;                        // z_stream is zlib's control structure
+    memset(&zs, 0, sizeof(zs));
 
-//    stringstream sstr;
-//    boost::iostreams::copy(in, sstr);
-//    cout << sstr.str() << endl;
-//    ASSERT_EQ(sstr.str(), string("nihao"));
-//}
+    if (inflateInit2(&zs, 15 +  32) != Z_OK) //
+        throw(std::runtime_error("inflateInit2 failed while decompressing."));
+    zs.next_in = (Bytef*)str.data();
+    zs.avail_in = str.size();
+
+    int ret;
+    char outbuffer[32768];
+    std::string outstring;
+
+    // get the decompressed bytes blockwise using repeated calls to inflate
+    do {
+        zs.next_out = reinterpret_cast<Bytef*>(outbuffer);
+        zs.avail_out = sizeof(outbuffer);
+        ret = inflate(&zs, 0);
+        if (outstring.size() < zs.total_out) {
+            outstring.append(outbuffer, zs.total_out - outstring.size());
+        }
+    } while (ret == Z_OK);
+
+    inflateEnd(&zs);
+
+    if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
+        std::ostringstream oss;
+        oss << "Exception during zlib decompression: (" << ret << ") " << zs.msg << std::endl;
+        throw(std::runtime_error(oss.str()));
+    }
+    return outstring;
+}
 
 static const size_t MAX_GETUTXOS_OUTPOINTS = 15; //allow a max of 15 outpoints to be queried at once
 
@@ -52,6 +71,7 @@ enum RetFormat {
     RF_HTML,
     RF_CSS,
     RF_JS,
+    RF_XML,
 };
 
 static const struct {
@@ -65,6 +85,7 @@ static const struct {
       {RF_HTML, "html"},
       {RF_CSS, "css"},
       {RF_JS, "js"},
+      {RF_XML, "xml"},
 };
 
 struct CCoin {
@@ -620,47 +641,85 @@ static bool rest_txdata(HTTPRequest* req, const std::string& strURIPart)
         return RESTERR(req, HTTP_NOT_FOUND, hashStr + " not found");
 
     const std::vector<unsigned char> txdata = tx->data;
+    std::string uncompresseddata = "";
+
+    Detector *d = new Detector();
+    std::string mimetype = d->detect(txdata);
+    if (mimetype == "application/gzip") {
+        const std::string strdata(txdata.begin(), txdata.end());
+        std::string uncompressed = decompress_string(strdata);
+        uncompresseddata = uncompressed;
+    }
 
     switch (rf) {
         case RF_UNDEF: {
-            Detector *d = new Detector();
-            std::string mimetype = d->detect(txdata);
-            std::string binaryData(txdata.begin(), txdata.end());
             req->WriteHeader("Content-Type", mimetype);
-            req->WriteReply(HTTP_OK, binaryData);
+            if (uncompresseddata != "")
+                req->WriteReply(HTTP_OK, uncompresseddata);
+            else {
+                std::string binaryData(txdata.begin(), txdata.end());
+                req->WriteReply(HTTP_OK, binaryData);
+            }
             return true;
         }
 
         case RF_JSON: {
-            std::string strJSON(txdata.begin(), txdata.end());
             req->WriteHeader("Content-Type", "application/ld+json");
-            req->WriteReply(HTTP_OK, strJSON);
+            if (uncompresseddata != "")
+                req->WriteReply(HTTP_OK, uncompresseddata);
+            else {
+                std::string strJSON(txdata.begin(), txdata.end());
+                req->WriteReply(HTTP_OK, strJSON);
+            }
             return true;
         }
 
         case RF_HTML: {
-            std::string strHTML(txdata.begin(), txdata.end());
             req->WriteHeader("Content-Type", "text/html");
-            req->WriteReply(HTTP_OK, strHTML);
+            if (uncompresseddata != "")
+                req->WriteReply(HTTP_OK, uncompresseddata);
+            else {
+                std::string strHTML(txdata.begin(), txdata.end());
+                req->WriteReply(HTTP_OK, strHTML);
+            }
             return true;
         }
 
         case RF_CSS: {
-            std::string strCSS(txdata.begin(), txdata.end());
             req->WriteHeader("Content-Type", "text/css");
-            req->WriteReply(HTTP_OK, strCSS);
+            if (uncompresseddata != "")
+                req->WriteReply(HTTP_OK, uncompresseddata);
+            else {
+                std::string strCSS(txdata.begin(), txdata.end());
+                req->WriteReply(HTTP_OK, strCSS);
+            }
             return true;
         }
 
         case RF_JS: {
-            std::string strJS(txdata.begin(), txdata.end());
             req->WriteHeader("Content-Type", "text/javascript");
-            req->WriteReply(HTTP_OK, strJS);
+            if (uncompresseddata != "")
+                req->WriteReply(HTTP_OK, uncompresseddata);
+            else {
+                std::string strJS(txdata.begin(), txdata.end());
+                req->WriteReply(HTTP_OK, strJS);
+            }
+            return true;
+        }
+
+        case RF_XML: {
+            req->WriteHeader("Content-Type", "application/xml");
+            if (uncompresseddata != "")
+                req->WriteReply(HTTP_OK, uncompresseddata);
+            else {
+                std::string strXML(txdata.begin(), txdata.end());
+                req->WriteReply(HTTP_OK, strXML);
+            }
             return true;
         }
 
         default: {
-            return RESTERR(req, HTTP_NOT_FOUND, "output format not found (available: html, css, js, json)");
+            return RESTERR(req, HTTP_NOT_FOUND, "output format not found (available: html, css, js, xml, json)");
         }
     }
 }

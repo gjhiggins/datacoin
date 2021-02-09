@@ -1062,6 +1062,9 @@ AC_SUBST(UNIVALUE_LIBS)
 AC_CHECK_HEADER([gmp.h],, AC_MSG_ERROR(libgmp headers missing),)
 AC_CHECK_LIB([gmp],         [main],, AC_MSG_ERROR(libgmp missing))
 
+AC_CHECK_HEADER([zlib.h],, AC_MSG_ERROR(libgmp headers missing),)
+AC_CHECK_LIB([z],         [main],, AC_MSG_ERROR(libz missing))
+
 BITCOIN_QT_PATH_PROGS([PROTOC], [protoc],$protoc_bin_path)
 
 AC_MSG_CHECKING([whether to build datacoind])
