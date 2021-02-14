@@ -651,6 +651,10 @@ static bool rest_txdata(HTTPRequest* req, const std::string& strURIPart)
         uncompresseddata = uncompressed;
     }
 
+    /* Development-only, temporarily disable CORS to allow XMLHttpRequest
+    req->WriteHeader("Access-Control-Allow-Origin", "null");
+    */
+
     switch (rf) {
         case RF_UNDEF: {
             req->WriteHeader("Content-Type", mimetype);
