@@ -49,6 +49,7 @@
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/join.hpp>
+#include <boost/bind.hpp>
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
