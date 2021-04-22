@@ -240,75 +240,88 @@ bool SendCoinsEntry::validate()
 
     if (!model->validateAddress(ui->payTo->text()))
     {
-        ui->payTo->setValid(false);
         retval = false;
+        ui->payTo->setValid(retval);
+        return retval;
     }
 
-    if (!ui->payAmount->validate())
-    {
-        retval = false;
-    }
+    if (ui->inscriptionText->text().isEmpty()) {
+        if (!ui->payAmount->validate())
+        {
+            retval = false;
+        }
 
-    // Sending a zero amount is invalid
-    if (ui->payAmount->value(0) <= 0)
-    {
-        ui->payAmount->setValid(false);
-        retval = false;
-    }
-
-    // Reject dust outputs:
-    if (retval && GUIUtil::isDust(ui->payTo->text(), ui->payAmount->value())) {
-        ui->payAmount->setValid(false);
-        retval = false;
+        // Sending a zero amount is invalid
+        if (ui->payAmount->value(0) <= 0)
+        {
+            QMessageBox::warning(this, tr("ZERO AMOUNT"),
+                tr("Amount cannot be zero."),
+                QMessageBox::Ok, QMessageBox::Ok);
+            ui->payAmount->setValid(false);
+            retval = false;
+        }
+        // Reject dust outputs:
+        if (retval && GUIUtil::isDust(ui->payTo->text(), ui->payAmount->value())) {
+            QMessageBox::warning(this, tr("AMOUNT IS DUST"),
+                tr("Amount too small, below dust amount."),
+                QMessageBox::Ok, QMessageBox::Ok);
+            ui->payAmount->setValid(false);
+            retval = false;
+        }
     }
 
     if (!ui->inscriptionText->text().isEmpty())
     {
         retval = false;
+
+        CTxDestination destination = DecodeDestination(ui->payTo->text().toStdString());
+        const CKeyID* keyID = boost::get<CKeyID>(&destination);
+        CKey key;
+        if (!model->getPrivKey(*keyID, key))
+        {
+            QMessageBox::warning(this, tr("NOT SENDING TO SELF"),
+                tr("Inscription field is not blank, you must use an address that you own."),
+                QMessageBox::Ok, QMessageBox::Ok);
+            ui->payTo->setValid(retval);
+            return retval;
+        }
+
+        if (ui->payAmount->value(0) > 0)
+        {
+            QMessageBox::warning(this, tr("AMOUNT NOT ZERO."),
+                tr("The amount must be 0 for an inscription transaction."),
+                QMessageBox::Ok, QMessageBox::Ok);
+            retval = false;
+            ui->payAmount->setValid(retval);
+            return retval;
+        }
+
         // Check if it is a hex string (produced by clicking "Notarise File")
         if (IsHex(ui->inscriptionText->text().toStdString())) {
             // and is of the correct length
             if (ui->inscriptionText->text().length() == 64)
                 retval = true;
+            else {
+                QMessageBox::warning(this, tr("Invalid Hash"),
+                    tr("Incorrect hash digest length."),
+                    QMessageBox::Ok, QMessageBox::Ok);
+                retval = false;
+            }
         }
         // Else check if it's a valid TrustyUri
         else if ((ui->inscriptionText->text().startsWith("ni://") && (ui->inscriptionText->text().length() < 127))) {
-            std::string s = "ni://example.org/sha-256;5AbXdpz5DcaYXCh9l3eI9ruBosiL5XDU3rxBbBaUO70";
-            std::string regex = "(^http.?://)(.*?)([/\\?]{1,})(.*)";
-
-            if (std::regex_match ("softwareTesting", std::regex("(soft)(.*)") ))
-               std::cout << "string:literal => matched\n";
-
-            const char mystr[] = "SoftwareTestingHelp";
-            std::string str ("software");
-            std::regex str_expr ("(soft)(.*)");
-
-            if (std::regex_match (str,str_expr))
-               std::cout << "string:object => matched\n";
-
-            if ( std::regex_match ( str.begin(), str.end(), str_expr ) )
-               std::cout << "string:range(begin-end)=> matched\n";
-
-            std::cmatch cm;
-            std::regex_match (mystr,cm,str_expr);
-
+            std::string str = ui->inscriptionText->text().toStdString();
+            std::regex str_expr ("(^ni.?://)(.*?)([/\\?]{1,})(.*)");
             std::smatch sm;
-            std::regex_match (str,sm,str_expr);
-
-            std::regex_match ( str.cbegin(), str.cend(), sm, str_expr);
-            std::cout << "String:range, size:" << sm.size() << " matches\n";
-
-
-            std::regex_match ( mystr, cm, str_expr, std::regex_constants::match_default );
-
-            std::cout << "the matches are: ";
-            for (unsigned i=0; i<sm.size(); ++i) {
-               std::cout << "[" << sm[i] << "] ";
+            std::regex_match(str, sm, str_expr);
+            if (sm.size() != 5) {
+                QMessageBox::warning(this, tr("Unrecognised TrustyURI"),
+                    tr("TrustyURI is not in recognised format of ni://example.org/sha-256;5AbXdpz5DcaYXCh9l3eI9ruBosiL5XDU3rxBbBaUO70"),
+                    QMessageBox::Ok, QMessageBox::Ok);
+                retval = false;
+            } else {
+                retval = true;
             }
-
-            std::cout << std::endl;
-
-            retval = true;
         }
         ui->inscriptionText->setValid(retval);
     }
@@ -338,10 +351,14 @@ bool SendCoinsEntry::validateInscription()
             std::regex str_expr ("(^ni.?://)(.*?)([/\\?]{1,})(.*)");
             std::smatch sm;
             std::regex_match(str, sm, str_expr);
-            if (sm.size() != 4)
+            if (sm.size() != 5) {
+                QMessageBox::warning(this, tr("Unrecognised TrustyURI"),
+                    tr("TrustyURI is not in recognised format of ni://example.org/sha-256;5AbXdpz5DcaYXCh9l3eI9ruBosiL5XDU3rxBbBaUO70"),
+                    QMessageBox::Ok, QMessageBox::Ok);
                 retval = false;
-
-            retval = true;
+            } else {
+                retval = true;
+            }
         }
 
         ui->inscriptionText->setValid(retval);
@@ -432,7 +449,7 @@ void SendCoinsEntry::setAddress(const QString &address)
 
 void SendCoinsEntry::setInscription(const QString &inscription)
 {
-    ui->inscriptionText->setText("ni://example.org/sha-256;5AbXdpz5DcaYXCh9l3eI9ruBosiL5XDU3rxBbBaUO70");
+    ui->inscriptionText->setText(inscription);
 }
 
 void SendCoinsEntry::setAmount(const CAmount &amount)

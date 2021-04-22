@@ -240,7 +240,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
             {
                 return InvalidAddress;
             }
-            if(rcp.amount < MIN_TXOUT_AMOUNT) // NOTE: DATACOIN added
+            if((rcp.inscription == "") && (rcp.amount < MIN_TXOUT_AMOUNT)) // NOTE: DATACOIN added
             {
                 return InvalidAmount;
             }

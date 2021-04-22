@@ -180,8 +180,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, bool fChe
         // It seems that this implementation will allow you to post empty transactions for free.
         // See also GenerateCoinbaseCommitment in validation.cpp
         // if (txout.nValue < MIN_TXOUT_AMOUNT && !(txout.nValue==0 && txout.scriptPubKey[0]==OP_RETURN && tx.data.size()==0))
-        // But where did the above come from in the first place? It's not in the 0.8 client.
-        if (txout.nValue < MIN_TXOUT_AMOUNT)
+        if (txout.nValue < MIN_TXOUT_AMOUNT && !(txout.nValue==0 && txout.scriptPubKey[0]==OP_RETURN && tx.data.size()==0))
             return state.DoS(100, false, REJECT_INVALID, "bad-txns-vout-belowminimum");
         if (txout.nValue > MAX_MONEY)
             return state.DoS(100, false, REJECT_INVALID, "bad-txns-vout-toolarge");

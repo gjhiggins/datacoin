@@ -1,4 +1,4 @@
-// Copyright (c) 2020 The Gapcoin Core developers
+// Copyright (c) 2020 The Datacoin Core developers
 // Copyright (c) 2016-2018 Duality Blockchain Solutions Developers
 // Copyright (c) 2014-2018 The Dash Core Developers
 // Copyright (c) 2009-2018 The Bitcoin Developers

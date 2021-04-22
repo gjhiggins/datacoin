@@ -2691,6 +2691,12 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletT
         if (recipient.fSubtractFeeFromAmount)
             nSubtractFeeFromAmount++;
     }
+    // FIME: gjh check vecSend.empty still okay to skip
+    //if (vecSend.empty())
+    //{
+    //    strFailReason = _("Transaction must have at least one recipient");
+    //    return false;
+    //}
 
     wtxNew.fTimeReceivedIsTxTime = true;
     wtxNew.BindWallet(this);

@@ -309,6 +309,7 @@ public:
 /**
  * Regression test
  */
+
 class CRegTestParams : public CChainParams {
 public:
     CRegTestParams() {

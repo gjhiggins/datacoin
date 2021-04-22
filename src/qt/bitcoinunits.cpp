@@ -39,7 +39,8 @@ bool BitcoinUnits::valid(int unit)
 QString BitcoinUnits::longName(int unit)
 {
     switch(unit)
-    {    case BTC: return QString("DTC");
+    {    
+    case BTC: return QString("DTC");
     case mBTC: return QString("mDTC");
     case uBTC: return QString::fromUtf8("µDTC (bits)");
     default: return QString("???");
