@@ -490,7 +490,7 @@ void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned
 
 bool CheckWork(CBlock* pblock, CWallet& wallet, std::shared_ptr<CReserveScript> reserve_script, int nThread, bool fSilent) //CReserveKey& reservekey)
 {
-	
+
     if (!CheckProofOfWork(pblock->GetHeaderHash(), pblock->nBits, Params().GetConsensus(), pblock->bnPrimeChainMultiplier, pblock->nPrimeChainType, pblock->nPrimeChainLength, fSilent))
         return fSilent ? false : error("DatacoinMiner : failed proof-of-work check");
 
@@ -506,8 +506,11 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, std::shared_ptr<CReserveScript> 
         if (pblock->hashPrevBlock != pindexBestHeader->GetBlockHash())// pcoinsTip->GetBestBlock()) //TODO: chainActive.Tip()->GetBlockHash()?
             return error(strprintf("DatacoinMiner %s : generated block is stale", nThread).c_str());
 
+    // Inform about the new block
+    GetMainSignals().BlockFound(pblock->GetHash());
+
         // Process this block the same as if we had received it from another node
-		bool fNewBlock;
+        bool fNewBlock;
         if (!ProcessNewBlock(Params(), std::make_shared<const CBlock>(*pblock) , true, &fNewBlock))
             return error(strprintf("DatacoinMiner %s : ProcessNewBlock, block not accepted", nThread).c_str());
 
