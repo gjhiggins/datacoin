@@ -161,6 +161,8 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "renderblock", 0, "block" },
     { "dumptriples", 1, "start" },
     { "dumptriples", 2, "end" },
+    { "dumpbootstrap", 1, "end" },
+    { "dumpbootstrap", 2, "start" },
 };
 
 class CRPCConvertTable

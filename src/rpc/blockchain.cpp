@@ -2246,6 +2246,77 @@ UniValue dumptriples(const JSONRPCRequest& request)
     return reply;
 }
 
+
+UniValue dumpbootstrap(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
+        throw std::runtime_error(
+            "dumpbootstrap filename endblock [startblock=0]\n"
+            "\nCreates a bootstrap format block dump of the blockchain in destination, which can be a directory or a path with filename, up to the given endblock number.\n"
+            "\nOptional <startblock> is the first block number to dump.\n"
+            "1. filename      (string) optional filename with path (either absolute or relative)\n"
+            "2. endblock      Last block number to dump.\n"
+            "2. startblock    (numeric) optional first block number to dump (default 0).\n"
+            );
+
+
+    fs::path filepath = request.params[0].get_str();
+    filepath = fs::absolute(filepath);
+
+    int nEndBlock = request.params[1].get_int();
+    if (nEndBlock < 0 || nEndBlock > chainActive.Tip()->nHeight)
+        throw std::runtime_error("End block number out of range.");
+
+
+    int nStartBlock = 0;
+    if (request.params.size() > 2) {
+        nStartBlock = request.params[2].get_int();
+    }
+
+    if (nStartBlock < 0 || nStartBlock > nEndBlock)
+        throw std::runtime_error("Start block number out of range.");
+
+
+    try {
+
+        boost::filesystem::path filepath = request.params[0].get_str();
+        filepath = boost::filesystem::absolute(filepath);
+
+        /* Prevent arbitrary files from being overwritten. There have been reports
+         * that users have overwritten wallet files this way:
+         * https://github.com/bitcoin/bitcoin/issues/9934
+         * It may also avoid other security issues.
+         */
+        if (boost::filesystem::exists(filepath)) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, filepath.string() + \
+                " already exists. If you are sure this is what you want, move it out of the way first");
+        }
+
+        FILE* file = fopen(filepath.string().c_str(), "wb");
+        if (!file)
+            throw JSONRPCError(RPC_MISC_ERROR, "Error: Could not open bootstrap file for writing.");
+
+        CAutoFile fileout(file, SER_DISK, CLIENT_VERSION);
+        if (fileout.IsNull())
+            return error("WriteBlockToDisk: OpenBlockFile failed");
+
+        CBlockIndex* pblockindex = chainActive[nStartBlock];
+        auto& consensus_params = Params().GetConsensus();
+
+        while (pblockindex->nHeight <= nEndBlock)
+        {
+            CBlock block;
+            ReadBlockFromDisk(block, pblockindex, consensus_params);
+            unsigned int nSize = GetSerializeSize(fileout, block);
+            fileout << FLATDATA(Params().MessageStart()) << nSize << block;
+        }
+    } catch(const boost::filesystem::filesystem_error &e) {
+        throw JSONRPCError(RPC_MISC_ERROR, "Error: Bootstrap dump failed!");
+    }
+
+    return NullUniValue;
+}
+
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         argNames
   //  --------------------- ------------------------  -----------------------  ----------
@@ -2284,6 +2355,7 @@ static const CRPCCommand commands[] =
     { "hidden",             "dumptriples",            &dumptriples,            {"filename", "start", "end"} },
     { "hidden",             "renderblock",            &renderblock,            {"block"} },
     { "hidden",             "renderblockhash",        &renderblockhash,        {"blockhash"} },
+    { "hidden",             "dumpbootstrap",          &dumpbootstrap,          {"filename", "end", "start"} },
 };
 
 void RegisterBlockchainRPCCommands(CRPCTable &t)
