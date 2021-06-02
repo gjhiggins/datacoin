@@ -2309,6 +2309,7 @@ UniValue dumpbootstrap(const JSONRPCRequest& request)
             ReadBlockFromDisk(block, pblockindex, consensus_params);
             unsigned int nSize = GetSerializeSize(fileout, block);
             fileout << FLATDATA(Params().MessageStart()) << nSize << block;
+            pblockindex = chainActive.Next(pblockindex);
         }
     } catch(const boost::filesystem::filesystem_error &e) {
         throw JSONRPCError(RPC_MISC_ERROR, "Error: Bootstrap dump failed!");
