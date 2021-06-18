@@ -57,6 +57,7 @@ void GeneratePrimeTable()
 uint64_t nTotalTests;
 unsigned int nTotalBlocksFound;
 std::vector<uint64_t> vTotalChainsFound;
+boost::timer::cpu_timer minerTimer;
 int nSieveTargetLength = -1;
 
 void ResetMinerStatistics()
@@ -74,6 +75,45 @@ void InitPrimeMiner()
         LogPrintf("InitPrimeMiner() : Setting sieve target length to %d\n", nSieveTargetLength);
 }
 
+void PrintMinerStatistics()
+{
+    LogPrintf("========================================================================\n");
+    LogPrintf("Miner statistics\n");
+    LogPrintf("========================================================================\n");
+
+    boost::timer::cpu_times const elapsed_times(minerTimer.elapsed());
+    int64_t nRunningTime = elapsed_times.wall;
+    double dRunningHours = (double)nRunningTime / 3600000000000.0;
+    int64_t nCPUTime = elapsed_times.system + elapsed_times.user;
+    double dCPUHours = (double)nCPUTime / 3600000000000.0;
+    LogPrintf("Running time: %.4f hours\n", dRunningHours);
+    LogPrintf("CPU time: %.4f hours\n", dCPUHours);
+
+    LogPrintf("Tests: %llu\n", nTotalTests);
+    LogPrintf("Blocks found: %u\n", nTotalBlocksFound);
+
+    // Find the last non-zero chain count
+    unsigned int nMaxPrintLength = nMaxChainLength;
+    for (int i = nMaxChainLength - 1; i >= 0; i--)
+    {
+        if (vTotalChainsFound[i] > 0)
+        {
+            nMaxPrintLength = i + 1;
+            break;
+        }
+    }
+
+    LogPrintf("\n");
+    LogPrintf("Chain statistics\n");
+    for (unsigned int i = 0; i < nMaxPrintLength; i++)
+        LogPrintf("%u-chains: %llu\n", i + 1, vTotalChainsFound[i]);
+
+    LogPrintf("========================================================================\n");
+
+    // Reset statistics
+    nHPSTimerStart = 0;
+    ResetMinerStatistics();
+}
 void PrintCompactStatistics(volatile unsigned int vFoundChainCounter[nMaxChainLength])
 {
     std::string strOutput;

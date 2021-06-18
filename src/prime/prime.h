@@ -13,6 +13,7 @@
 #include <gmp.h>
 #include <gmpxx.h>
 #include <bitset>
+#include <boost/timer/timer.hpp>
 
 /**********************/
 /* DATACOIN PROTOCOL */
@@ -53,6 +54,7 @@ static const unsigned int nMaxChainLength = 24;
 extern uint64_t nTotalTests;
 extern unsigned int nTotalBlocksFound;
 extern std::vector<uint64_t> vTotalChainsFound;
+extern boost::timer::cpu_timer minerTimer;
 static const unsigned int nDefaultSieveTargetLength = -1;
 extern int nSieveTargetLength;
 
@@ -71,6 +73,8 @@ void GeneratePrimeTable();
 void ResetMinerStatistics();
 // Initialize the miner
 void InitPrimeMiner();
+// Print miner statistics
+void PrintMinerStatistics();
 // Print compact statistics
 void PrintCompactStatistics(volatile unsigned int vFoundChainCounter[nMaxChainLength]);
 // Get next prime number of p

@@ -109,6 +109,9 @@ BITCOIN_CORE_H = \
   keystore.h \
   dbwrapper.h \
   limitedmap.h \
+  madpool/primeserver.h \
+  madpool/protocol.pb.h \
+  madpool/pool.h \
   memusage.h \
   merkleblock.h \
   miner.h \
@@ -201,6 +204,13 @@ libbitcoin_server_a_SOURCES = \
   httpserver.cpp \
   init.cpp \
   dbwrapper.cpp \
+  madpool/primeserver.cpp \
+  madpool/protocol.pb.cpp \
+  madpool/pool.cpp \
+  madpool/utf8.h \
+  madpool/utf8/checked.h \
+  madpool/utf8/core.h \
+  madpool/utf8/unchecked.h \
   merkleblock.cpp \
   miner.cpp \
   net.cpp \
@@ -405,7 +415,7 @@ datacoind_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-datacoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) -lgmp -lprotobuf -lz
+datacoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) -lgmp -lboost_timer -lczmq -lprotobuf -lz
 
 # bitcoin-cli binary #
 datacoin_cli_SOURCES = bitcoin-cli.cpp
@@ -453,7 +463,7 @@ datacoin_tx_LDADD = \
   $(MINIUPNPC_LIBS) \
   $(EVENT_LIBS)
 
-datacoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(BDB_LIBS) $(ZMQ_LIBS) -lgmp -lz
+datacoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(BDB_LIBS) $(ZMQ_LIBS) -lgmp -lboost_timer -lz
 #
 
 # bitcoinconsensus library #

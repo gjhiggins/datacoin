@@ -14,6 +14,7 @@
 #include <consensus/merkle.h>
 #include <consensus/validation.h>
 #include <hash.h>
+#include <madpool/primeserver.h> // NOTE: DATACOIN pool
 #include <net.h>
 #include <policy/feerate.h>
 #include <policy/policy.h>
@@ -533,6 +534,8 @@ CWallet *GetFirstWallet() {
 void static DatacoinCPUMiner(int nThread, int numThreads, const CChainParams& chainparams)
 {
     static CCriticalSection cs;
+    static bool fTimerStarted = false;
+    bool fPrintStatsAtEnd = false;
 
     LogPrintf("DatacoinMiner %s started\n", nThread);
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
@@ -613,6 +616,20 @@ void static DatacoinCPUMiner(int nThread, int numThreads, const CChainParams& ch
     // Primecoin: Allocate data structures for mining
     CSieveOfEratosthenes sieve;
     CPrimalityTestParams testParams;
+
+    // Start the timer if not already started
+    if (!fTimerStarted)
+    {
+        LOCK(cs);
+        if (!fTimerStarted)
+        {
+            fTimerStarted = true;
+            minerTimer.start();
+
+            // First thread will print the stats
+            fPrintStatsAtEnd = true;
+        }
+    }
 
     // Many machines may be using the same key if they are sharing the same wallet
     // Make extra nonce unique by setting it to a modulo of the high resolution clock's value
@@ -944,12 +961,20 @@ void static DatacoinCPUMiner(int nThread, int numThreads, const CChainParams& ch
     catch (boost::thread_interrupted)
     {
         LogPrintf("DatacoinMiner %s terminated.\n", nThread);
+        // Print statistics
+        if (fPrintStatsAtEnd)
+        {
+            PrintMinerStatistics();
+            fTimerStarted = false;
+        }
         throw;
     }
 }
 
 int GenerateDatacoins(bool fGenerate, int nThreads, const CChainParams& chainparams)
 {
+    // pro tem, whilst developing
+    bool use_server = true;
 
     static boost::thread_group* minerThreads = NULL;
 
@@ -971,8 +996,20 @@ int GenerateDatacoins(bool fGenerate, int nThreads, const CChainParams& chainpar
     for (int i = 0; i < nThreads; i++)
         minerThreads->create_thread(boost::bind(&DatacoinCPUMiner, i, nThreads, boost::cref(chainparams)));
 
+    // NOTE: DATACOIN pool
     if (fDebug && gArgs.GetBoolArg("-printmining", false))
         LogPrintf("[PrimeServer] GenerateDatacoins: %s\n", fGenerate ? "true" : "false");
 	
+    // fGenerate off, so kill and running pool servers
+    if (use_server && gPrimeServer && !fGenerate){
+        delete gPrimeServer;
+        gPrimeServer = nullptr;
+    }
+    
+    // fGenerate on, so create a pool server if one doesn't alread exist
+    if (use_server && fGenerate && !gPrimeServer){
+        gPrimeServer = PrimeServer::CreateServer(vpwallets[0]);
+        gPrimeServer->NotifyNewBlock(chainActive.Tip());
+    }
     return nThreads;
 }
