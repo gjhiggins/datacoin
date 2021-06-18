@@ -3335,6 +3335,11 @@ void TestPackageSelection(const CChainParams& chainparams, CScript scriptPubKey,
     // о relay и отдаче транзакции сборщику блока, но. А сборщик смотрит уже настоящую комиссию.
     // Так далее и поступим. Мообщае пулу комиссию по логике теста, но делаем настоящую комиссию на 5000000 больше
     // На боевом мемпуле это никак не скажется.
+    // It's strange that you can put a commission in a transaction and tell the pool that the commission is less
+    // As I understand it, when addUnchecked, the pool does not check the commission, and considers it solely for making a decision
+    // about relay and transferring the transaction to the block collector, but. And the collector is already looking at the real commission.
+    // Let's do so. I give the pool a commission on the logic of the test, but we make the real commission 5,000,000 more
+    // This will not affect the combat mempool in any way. 
     // Test that a package below the block min tx fee doesn't get included
     tx.vin[0].prevout.hash = hashHighFeeTx;
     tx.vout[0].nValue = vBLOCKSUBSIDY[0] - 5000000 - 250000000 - 5000000; // was 0 fee
