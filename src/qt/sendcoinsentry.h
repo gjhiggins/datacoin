@@ -32,7 +32,6 @@ public:
 
     void setModel(WalletModel *model);
     bool validate();
-    bool validateInscription();
     SendCoinsRecipient getValue();
 
     /** Return whether the entry is still empty and unedited */
@@ -40,7 +39,6 @@ public:
 
     void setValue(const SendCoinsRecipient &value);
     void setAddress(const QString &address);
-    void setInscription(const QString &inscription);
     void setAmount(const CAmount &amount);
 
     /** Set up the tab chain manually, as Qt messes up the tab chain by default in some cases
@@ -68,8 +66,7 @@ private Q_SLOTS:
     void on_addressBookButton_clicked();
     void on_pasteButton_clicked();
     void updateDisplayUnit();
-    void on_selectFileButton_clicked();
-    bool inscriptionChanged();
+
 private:
     SendCoinsRecipient recipient;
     Ui::SendCoinsEntry *ui;
@@ -77,7 +74,6 @@ private:
     const PlatformStyle *platformStyle;
 
     bool updateLabel(const QString &address);
-    std::string hashFile(std::string fileName);
 };
 
 #endif // BITCOIN_QT_SENDCOINSENTRY_H

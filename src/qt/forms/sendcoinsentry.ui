@@ -170,7 +170,7 @@
       <item>
        <widget class="QCheckBox" name="checkboxSubtractFeeFromAmount">
         <property name="toolTip">
-         <string>The fee will be deducted from the amount being sent. The recipient will receive fewer datacoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</string>
+         <string>The fee will be deducted from the amount being sent. The recipient will receive a lesser amount of Datacoin than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</string>
         </property>
         <property name="text">
          <string>S&amp;ubtract fee from amount</string>
@@ -206,51 +206,8 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="inscriptionLabel">
-      <property name="text">
-       <string>Inscription:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="buddy">
-       <cstring>inscriptionText</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <layout class="QHBoxLayout" name="inscriptionLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QValidatedLineEdit" name="inscriptionText">
-        <property name="toolTip">
-         <string>A (100-character max) string of ASCII characters to be stored with the transaction on the Gapcoin network.</string>
-        </property>
-        <property name="placeholderText">
-         <string>ni://example.org/sha-256;5AbXdpz5DcaYXCh9l3eI9ruBosiL5XDU3rxBbBaUO70</string>
-        </property>
-        <property name="clearButtonEnabled">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="selectFileButton">
-        <property name="text">
-         <string>Notarize File...</string>
-        </property>
-         <property name="toolTip">
-          <string>Select file to hash for notarization in the Gapcoin blockchain.</string>
-         </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="5" column="0" colspan="2">
-     <widget class="Line" name="line2">
+    <item row="4" column="0" colspan="2">
+     <widget class="Line" name="line">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -739,26 +696,6 @@
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="inscriptionLabel_is">
-      <property name="text">
-       <string>Inscription:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QValidatedLineEdit" name="inscriptionText_is">
-      <property name="toolTip">
-       <string>A (100-character max) string of ASCII characters to be stored with the transaction on the Datacoin network.</string>
-      </property>
-      <property name="placeholderText">
-       <string>ni://example.org/sha-256;5AbXdpz5DcaYXCh9l3eI9ruBosiL5XDU3rxBbBaUO70</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
      <widget class="QLabel" name="amountLabel_is">
       <property name="text">
        <string>A&amp;mount:</string>
@@ -771,7 +708,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="2" column="1">
      <widget class="BitcoinAmountField" name="payAmount_is">
       <property name="acceptDrops">
        <bool>false</bool>
@@ -1292,26 +1229,6 @@
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="inscriptionLabel_s">
-      <property name="text">
-       <string>Inscription:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QValidatedLineEdit" name="inscriptionText_s">
-      <property name="toolTip">
-       <string>A (100-character max) string of ASCII characters to be stored with the transaction on the Datacoin network.</string>
-      </property>
-      <property name="placeholderText">
-       <string>ni://example.org/sha-256;5AbXdpz5DcaYXCh9l3eI9ruBosiL5XDU3rxBbBaUO70</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
      <widget class="QLabel" name="amountLabel_s">
       <property name="text">
        <string>A&amp;mount:</string>
@@ -1324,7 +1241,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="2" column="1">
      <widget class="BitcoinAmountField" name="payAmount_s">
       <property name="acceptDrops">
        <bool>false</bool>

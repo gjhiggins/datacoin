@@ -242,29 +242,18 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
             {
                 return InvalidAddress;
             }
-            if((rcp.inscription == "") && (rcp.amount < MIN_TXOUT_AMOUNT)) // NOTE: DATACOIN added
+            if(rcp.amount < MIN_TXOUT_AMOUNT) // NOTE: DATACOIN added
             {
                 return InvalidAmount;
             }
             setAddress.insert(rcp.address);
             ++nAddresses;
 
-            if (rcp.inscription != "")
-            {
-                QByteArray ba = rcp.inscription.toLocal8Bit();
-                std::vector<unsigned char> data(ba.begin(), ba.end());
-                CScript scriptPubKey = CScript() << OP_RETURN << data;
-                CRecipient recipient = {scriptPubKey, rcp.amount, rcp.fSubtractFeeFromAmount};
-                vecSend.push_back(recipient);
+            CScript scriptPubKey = GetScriptForDestination(DecodeDestination(rcp.address.toStdString()));
+            CRecipient recipient = {scriptPubKey, rcp.amount, rcp.fSubtractFeeFromAmount};
+            vecSend.push_back(recipient);
 
-                total += rcp.amount;
-            } else {
-                CScript scriptPubKey = GetScriptForDestination(DecodeDestination(rcp.address.toStdString()));
-                CRecipient recipient = {scriptPubKey, rcp.amount, rcp.fSubtractFeeFromAmount};
-                vecSend.push_back(recipient);
-
-                total += rcp.amount;
-            }
+            total += rcp.amount;
         }
     }
     if(setAddress.size() != nAddresses)
@@ -290,7 +279,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
 
         CWalletTx *newTx = transaction.getTransaction();
         CReserveKey *keyChange = transaction.getPossibleKeyChange();
-        bool fCreated = wallet->CreateTransaction(vecSend, *newTx, *keyChange, nFeeRequired, nChangePosRet, strFailReason, coinControl, "");
+        bool fCreated = wallet->CreateTransaction(vecSend, *newTx, *keyChange, nFeeRequired, nChangePosRet, strFailReason, coinControl, "", false);
         transaction.setTransactionFee(nFeeRequired);
         if (fSubtractFeeFromAmount && fCreated)
             transaction.reassignAmounts(nChangePosRet);
@@ -582,15 +571,6 @@ bool WalletModel::IsSpendable(const CTxDestination& dest) const
 bool WalletModel::getPrivKey(const CKeyID &address, CKey& vchPrivKeyOut) const
 {
     return wallet->GetKey(address, vchPrivKeyOut);
-}
-
-void WalletModel::searchNotaryTx(uint256 hash)
-{
-    /* TODO search notary txs
-    std::vector<std::pair<std::string, int> > txResults;
-    wallet->SearchNotaryTransactions(hash, txResults);
-    emit notarySearchComplete(txResults);
-    */
 }
 
 // returns a list of COutputs from COutPoints
