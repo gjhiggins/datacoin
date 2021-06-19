@@ -217,11 +217,10 @@ int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParam
 bool CheckWork(CBlock* pblock, CWallet& wallet, std::shared_ptr<CReserveScript> reserve_script, int nThread, bool fSilent=false);
 
 extern double dHashesPerSec;
-extern bool isMining;
 extern int64_t nHPSTimerStart;
 extern double dPrimesPerSec;
 extern double dChainsPerDay;
 extern double dBlocksPerDay;
 
-int GenerateDatacoins(bool fGenerate, int nThreads, const CChainParams& chainparams);
+void GenerateDatacoins(bool fGenerate, const CChainParams& chainparams);
 #endif // BITCOIN_MINER_H

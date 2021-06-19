@@ -86,7 +86,6 @@ private:
     QLabel *labelWalletHDStatusIcon;
     QLabel *connectionsControl;
     QLabel *labelBlocksIcon;
-    QLabel *labelMiningStatusIcon;
     QLabel *progressBarLabel;
     QProgressBar *progressBar;
     QProgressDialog *progressDialog;
@@ -94,7 +93,6 @@ private:
     QMenuBar *appMenuBar;
     QAction *overviewAction;
     QAction *historyAction;
-    QAction *miningAction;
     QAction *quitAction;
     QAction *sendCoinsAction;
     QAction *sendCoinsMenuAction;
@@ -171,8 +169,6 @@ public Q_SLOTS:
     void handleRestart(QStringList args);
     /** Set number of blocks and last block date shown in the UI */
     void setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool headers);
-    /** Set mining state shown in the UI */
-    void setMining(bool isMining, double hashrate);
 
     /** Notify the user of an event from the core network or transaction handling code.
        @param[in] title     the message box / notification title
@@ -208,9 +204,7 @@ private Q_SLOTS:
     void gotoOverviewPage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
-    /** Switch to mining page */
-    void gotoMiningPage();
-    /** Switch to Explorer Page */
+    /** Switch to Explorer page */
     void gotoBlockExplorerPage(); 
     /** Switch to Data store Page */
     void gotoDatastorePage(); 

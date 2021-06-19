@@ -3684,12 +3684,6 @@ extern UniValue getcheckpoint(const JSONRPCRequest& request); // in checkpointsy
 extern UniValue sendcheckpoint(const JSONRPCRequest& request);
 extern UniValue enforcecheckpoint(const JSONRPCRequest& request);
 extern UniValue setgenerate(const JSONRPCRequest& request);
-extern UniValue getsievesize(const JSONRPCRequest& request);
-extern UniValue setsievesize(const JSONRPCRequest& request);
-extern UniValue getsievefilterprimes(const JSONRPCRequest& request);
-extern UniValue setsievefilterprimes(const JSONRPCRequest& request);
-extern UniValue getsieveextensions(const JSONRPCRequest& request);
-extern UniValue setsieveextensions(const JSONRPCRequest& request);
 extern UniValue getprimespersec(const JSONRPCRequest& request);
 extern UniValue senddata(const JSONRPCRequest& request);
 extern UniValue getdata(const JSONRPCRequest& request);

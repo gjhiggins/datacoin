@@ -18,6 +18,7 @@
 #include <net.h>
 #include <policy/fees.h>
 #include <pow.h>
+#include <prime/prime.h>
 #include <rpc/blockchain.h>
 #include <rpc/mining.h>
 #include <rpc/server.h>
@@ -27,7 +28,6 @@
 #include <validationinterface.h>
 #include <wallet/wallet.h>
 #include <warnings.h>
-#include <prime/prime.h>
 
 #include <memory>
 #include <stdint.h>
@@ -43,92 +43,6 @@ unsigned int ParseConfirmTarget(const UniValue& value)
     }
     return (unsigned int)target;
 }
-
-UniValue getsievesize(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() != 0)
-        throw std::runtime_error(
-            "getsievesize\n"
-            "Returns the current sieve size used by the mining algorithm.");
-
-    return (boost::int64_t)nSieveSize;
-}
-
-UniValue setsievesize(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() < 1)
-        throw std::runtime_error(
-            "setsievesize <sievesize>\n"
-            "<sievesize> determines how many numbers are sieved at one time.");
-
-    unsigned int nSize = nDefaultSieveSize;
-    if (request.params.size() > 0)
-        nSize = request.params[0].get_int();
-
-    nSize = std::max(std::min(nSize, nMaxSieveSize), nMinSieveSize);
-
-    nSieveSize = nSize;
-    return UniValue::VNULL;
-}
-
-
-UniValue getsievefilterprimes(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() != 0)
-        throw std::runtime_error(
-            "getsievefilterprimes\n"
-            "Returns the current number of primes that are filtered out by the sieve.");
-
-    return (boost::int64_t)nSieveFilterPrimes;
-}
-
-
-UniValue setsievefilterprimes(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() < 1)
-        throw std::runtime_error(
-            "setsievefilterprimes <number of primes>\n"
-            "<number of primes> determines how many primes are filtered out by the sieve.");
-
-    unsigned int nPrimes = nDefaultSieveFilterPrimes;
-    if (request.params.size() > 0)
-        nPrimes = request.params[0].get_int();
-
-    nPrimes = std::max(std::min(nPrimes, nMaxSieveFilterPrimes), nMinSieveFilterPrimes);
-
-    nSieveFilterPrimes = nPrimes;
-    return UniValue::VNULL;
-}
-
-
-UniValue getsieveextensions(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() != 0)
-        throw std::runtime_error(
-            "getsieveextensions\n"
-            "Returns the number of times the sieve is extended.");
-
-    return (boost::int64_t)nSieveExtensions;
-}
-
-
-UniValue setsieveextensions(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() < 1)
-        throw std::runtime_error(
-            "setsieveextensions <sieveextensions>\n"
-            "<sieveextensions> determines the number of times the sieve will be extended.");
-
-    unsigned int nExtensions = TestNet() ? nDefaultSieveExtensionsTestnet : nDefaultSieveExtensions;
-    if (request.params.size() > 0)
-        nExtensions = request.params[0].get_int();
-
-    nExtensions = std::max(std::min(nExtensions, nMaxSieveExtensions), nMinSieveExtensions);
-
-    nSieveExtensions = nExtensions;
-    return UniValue::VNULL;
-}
-
 
 /**
  * Return average network hashes per second based on the last 'lookup' blocks,
@@ -322,7 +236,7 @@ UniValue generatetoaddress(const JSONRPCRequest& request)
 
 bool getgenerate()
 {
-    return gArgs.GetBoolArg("-gen", DEFAULT_GENERATE);
+    return gArgs.GetBoolArg("-gen", DEFAULT_POOLSERVER);
 }
 
 UniValue getgenerate(const JSONRPCRequest& request)
@@ -330,8 +244,8 @@ UniValue getgenerate(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() != 0)
         throw std::runtime_error(
             "getgenerate\n"
-            "\nReturn if the server is set to generate coins or not. The default is false.\n"
-            "It is set with the command line argument -gen (or gapcoin.conf setting gen)\n"
+            "\nReturn if the poolserver is set running or not. The default is true.\n"
+            "It is set with the command line argument -poolserver (or datacoin.conf setting poolserver)\n"
             "It can also be set with the setgenerate call.\n"
             "\nResult\n"
             "true|false      (boolean) If the server is set to generate coins or not\n"
@@ -341,29 +255,27 @@ UniValue getgenerate(const JSONRPCRequest& request)
         );
 
     LOCK(cs_main);
-    return gArgs.GetBoolArg("-gen", DEFAULT_GENERATE);
+    return gArgs.GetBoolArg("-poolserver", DEFAULT_POOLSERVER);
 }
 
 UniValue setgenerate(const JSONRPCRequest& request)
 {
-    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 1)
         throw std::runtime_error(
-            "setgenerate generate ( genproclimit )\n"
+            "setgenerate generate\n"
             "\nSet 'generate' true or false to turn generation on or off.\n"
-            "Generation is limited to 'genproclimit' processors, -1 is unlimited.\n"
             "See the getgenerate call for the current setting.\n"
             "\nArguments:\n"
             "1. generate         (boolean, required) Set to true to turn on generation, false to turn off.\n"
-            "2. genproclimit     (numeric, optional) Set the processor limit for when generation is on. Can be -1 for unlimited.\n"
             "\nExamples:\n"
             "\nSet the generation on with a limit of one processor\n"
-            + HelpExampleCli("setgenerate", "true 1") +
+            + HelpExampleCli("setgenerate", "true") +
             "\nCheck the setting\n"
             + HelpExampleCli("getgenerate", "") +
             "\nTurn off generation\n"
             + HelpExampleCli("setgenerate", "false") +
             "\nUsing json rpc\n"
-            + HelpExampleRpc("setgenerate", "true, 1")
+            + HelpExampleRpc("setgenerate", "true")
         );
 
     if (Params().MineBlocksOnDemand())
@@ -373,22 +285,10 @@ UniValue setgenerate(const JSONRPCRequest& request)
     if (request.params.size() > 0)
         fGenerate = request.params[0].get_bool();
 
-    int nGenProcLimit = gArgs.GetArg("-genproclimit", DEFAULT_GENERATE_THREADS);
-    if (request.params.size() > 1)
-    {
-        nGenProcLimit = request.params[1].get_int();
-        if (nGenProcLimit == 0)
-            fGenerate = false;
-    }
+    gArgs.SoftSetArg("-poolserver", (fGenerate ? "1" : "0"));
+    GenerateDatacoins(fGenerate, Params());
 
-    gArgs.SoftSetArg("-gen", (fGenerate ? "1" : "0"));
-    gArgs.SoftSetArg("-genproclimit", itostr(nGenProcLimit));
-    //mapArgs["-gen"] = (fGenerate ? "1" : "0");
-    //mapArgs ["-genproclimit"] = itostr(nGenProcLimit);
-    int numCores = GenerateDatacoins(fGenerate, nGenProcLimit, Params());
-
-    nGenProcLimit = nGenProcLimit >= 0 ? nGenProcLimit : numCores;
-    std::string msg = std::to_string(nGenProcLimit) + " of " + std::to_string(numCores);
+    std::string msg = fGenerate ? "true" : "false";
     return msg;
 }
 
@@ -409,7 +309,6 @@ UniValue getmininginfo(const JSONRPCRequest& request)
             "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
             "  \"pooledtx\": n              (numeric) The size of the mempool\n"
             "  \"generate\": true|false     (boolean) If the generation is on or off (see getgenerate or setgenerate calls)\n"
-            "  \"genproclimit\": n          (numeric) The processor limit for generation. -1 if no generation. (see getgenerate or setgenerate calls)\n"
             "  \"sieveextensions\": n       (numeric, optional) The number of sieve extensions used.\n"
             "  \"sievefilterprimes\": n     (numeric, optional) The amount of primes used in the sieve.\n"
             "  \"sievesize\": n             (numeric, optional) The size of the sieve.\n"
@@ -435,8 +334,7 @@ UniValue getmininginfo(const JSONRPCRequest& request)
     obj.push_back(Pair("difficulty",       getdifficulty(request)));
     //obj.push_back(Pair("networkhashps",    getnetworkhashps(request)));
     obj.push_back(Pair("pooledtx",         (uint64_t)mempool.size()));
-    obj.push_back(Pair("generate",      (bool)gArgs.GetBoolArg("-gen", false))); // NOTE: DATACOIN added
-    obj.push_back(Pair("genproclimit",  (int)gArgs.GetArg("-genproclimit", -1))); // NOTE: DATACOIN added
+    obj.push_back(Pair("generate",      (bool)gArgs.GetBoolArg("-poolserver", false))); // NOTE: DATACOIN added
     obj.push_back(Pair("sieveextensions",(int)nSieveExtensions));
     obj.push_back(Pair("sievefilterprimes",(int)nSieveFilterPrimes));
     obj.push_back(Pair("sievesize",     (int)nSieveSize));
@@ -746,7 +644,14 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
 
         // Create new block
         CScript scriptDummy = CScript() << OP_TRUE;
+        /* DATACOIN orig code
         pblocktemplate = BlockAssembler(Params()).CreateNewBlock(scriptDummy, fSupportsSegwit);
+        */
+        std::shared_ptr<CReserveScript> coinbase_script;
+        if(!vpwallets.empty()) {
+            vpwallets[0]->GetScriptForMining(coinbase_script);
+        }
+        pblocktemplate = BlockAssembler(Params()).CreateNewBlock(vpwallets.empty() ? scriptDummy : coinbase_script->reserveScript, fSupportsSegwit);
         if (!pblocktemplate)
             throw JSONRPCError(RPC_OUT_OF_MEMORY, "Out of memory");
 
@@ -943,6 +848,7 @@ UniValue submitblock(const JSONRPCRequest& request)
 
     std::shared_ptr<CBlock> blockptr = std::make_shared<CBlock>();
     CBlock& block = *blockptr;
+    // std::cout << "Received blockhex: " << request.params[0].get_str() << std::endl;
     if (!DecodeHexBlk(block, request.params[0].get_str())) {
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
     }
@@ -1208,14 +1114,8 @@ static const CRPCCommand commands[] =
     { "mining",             "getblocktemplate",       &getblocktemplate,       {"template_request"} },
     { "mining",             "submitblock",            &submitblock,            {"hexdata","dummy"} },
 
-    { "mining",             "setgenerate",            &setgenerate,            {"generate", "genproclimit"} },
+    { "mining",             "setgenerate",            &setgenerate,            {"generate"} },
     { "mining",             "getgenerate",            &getgenerate,            {} },
-    { "mining",             "getsievesize",           &getsievesize,           {} },
-    { "mining",             "setsievesize",           &setsievesize,           {"sievesize"} },
-    { "mining",             "getsievefilterprimes",   &getsievefilterprimes,   {} },
-    { "mining",             "setsievefilterprimes",   &setsievefilterprimes,   {"number_of_primes"} },
-    { "mining",             "getsieveextensions",     &getsieveextensions,     {} },
-    { "mining",             "setsieveextensions",     &setsieveextensions,     {"sieveextensions"} },
     { "mining",             "getprimespersec",        &getprimespersec,        {} },
 
     { "generating",         "generatetoaddress",      &generatetoaddress,      {"nblocks","address","maxtries"} },

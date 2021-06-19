@@ -79,7 +79,6 @@ public:
     bool isReleaseVersion() const;
     QString formatClientStartupTime() const;
     QString dataDir() const;
-    bool getMiningStarted() const;
 
     // caches for the best header
     mutable std::atomic<int> cachedBestHeaderHeight;
@@ -91,7 +90,6 @@ private:
     BanTableModel *banTableModel;
 
     QTimer *pollTimer;
-    bool miningStarted;
 
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();

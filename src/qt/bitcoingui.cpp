@@ -203,7 +203,6 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *
     unitDisplayControl = new UnitDisplayStatusBarControl(platformStyle);
     labelWalletEncryptionIcon = new QLabel();
     labelWalletHDStatusIcon = new QLabel();
-    labelMiningStatusIcon = new QLabel();
     connectionsControl = new GUIUtil::ClickableLabel();
     labelBlocksIcon = new GUIUtil::ClickableLabel();
     if(enableWallet)
@@ -214,7 +213,6 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *
         frameBlocksLayout->addWidget(labelWalletEncryptionIcon);
         frameBlocksLayout->addWidget(labelWalletHDStatusIcon);
         frameBlocksLayout->addStretch();
-        frameBlocksLayout->addWidget(labelMiningStatusIcon);
     }
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(connectionsControl);
@@ -320,16 +318,6 @@ void BitcoinGUI::createActions()
     historyAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_4));
     tabGroup->addAction(historyAction);
 
-    miningAction = new QAction(platformStyle->SingleColorIcon(":/icons/mining"), tr("&Mining"), this);
-    miningAction->setStatusTip(tr("UI to control mining operations"));
-    miningAction->setToolTip(miningAction->statusTip());
-    miningAction->setCheckable(true);
-#ifdef Q_OS_MAC
-    miningAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_5));
-#else
-    miningAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
-#endif
-    tabGroup->addAction(miningAction);
 
 #ifdef ENABLE_WALLET
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
@@ -346,8 +334,6 @@ void BitcoinGUI::createActions()
     connect(receiveCoinsMenuAction, SIGNAL(triggered()), this, SLOT(gotoReceiveCoinsPage()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
-    connect(miningAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(miningAction, SIGNAL(triggered()), this, SLOT(gotoMiningPage()));
 #endif // ENABLE_WALLET
 
     quitAction = new QAction(platformStyle->TextColorIcon(":/icons/quit"), tr("E&xit"), this);
@@ -504,7 +490,6 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
         toolbar->addAction(historyAction);
-        toolbar->addAction(miningAction);
         overviewAction->setChecked(true);
     }
 }
@@ -604,7 +589,6 @@ void BitcoinGUI::setWalletActionsEnabled(bool enabled)
     receiveCoinsAction->setEnabled(enabled);
     receiveCoinsMenuAction->setEnabled(enabled);
     historyAction->setEnabled(enabled);
-    miningAction->setEnabled(enabled);
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
     changePassphraseAction->setEnabled(enabled);
@@ -745,12 +729,6 @@ void BitcoinGUI::gotoHistoryPage()
 {
     historyAction->setChecked(true);
     if (walletFrame) walletFrame->gotoHistoryPage();
-}
-
-void BitcoinGUI::gotoMiningPage()
-{
-    miningAction->setChecked(true);
-    if (walletFrame) walletFrame->gotoMiningPage();
 }
 
 void BitcoinGUI::gotoBlockExplorerPage()
@@ -952,21 +930,6 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     labelBlocksIcon->setToolTip(tooltip);
     progressBarLabel->setToolTip(tooltip);
     progressBar->setToolTip(tooltip);
-}
-
-void BitcoinGUI::setMining(bool mining, double hashrate)
-{
-    if (mining)
-    {
-        labelMiningStatusIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/mining_active").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
-        labelMiningStatusIcon->setToolTip(tr("Mining Gapcoin at %1 primes per second").arg(hashrate));
-    }
-    else
-    {
-        labelMiningStatusIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/mining_inactive").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
-        labelMiningStatusIcon->setToolTip(tr("Not mining Gapcoin"));
-    }
-    labelMiningStatusIcon->setEnabled(mining);
 }
 
 void BitcoinGUI::message(const QString &title, const QString &message, unsigned int style, bool *ret)

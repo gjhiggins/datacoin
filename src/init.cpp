@@ -171,7 +171,7 @@ void Interrupt(boost::thread_group& threadGroup)
 {
     // TODO: DATACOIN miner uncomment?
     // Primecoin: allow miner threads to exit gracefully 
-    if(gArgs.GetBoolArg("-gen", false)) GenerateDatacoins(false, 0, Params());
+    if(gArgs.GetBoolArg("-poolserver", false)) GenerateDatacoins(false, Params());
 
     InterruptHTTPServer();
     InterruptHTTPRPC();
@@ -206,7 +206,7 @@ void PrepareShutdown()
 #ifdef ENABLE_WALLET
     FlushWallets();
 #endif
-    GenerateDatacoins(false, 0, Params());
+    GenerateDatacoins(false, Params());
 
     MapPort(false);
 
@@ -536,8 +536,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageGroup(_("Block creation options:"));
     strUsage += HelpMessageOpt("-blockmaxweight=<n>", strprintf(_("Set maximum BIP141 block weight (default: %d)"), DEFAULT_BLOCK_MAX_WEIGHT));
     strUsage += HelpMessageOpt("-blockmintxfee=<amt>", strprintf(_("Set lowest fee rate (in %s/kB) for transactions to be included in block creation. (default: %s)"), CURRENCY_UNIT, FormatMoney(DEFAULT_BLOCK_MIN_TX_FEE)));
-    strUsage += HelpMessageOpt("-gen", strprintf(_("Generate coins (default: %u)"), DEFAULT_GENERATE));
-    strUsage += HelpMessageOpt("-genproclimit=<n>", strprintf(_("Set the number of threads for coin generation if enabled (-1 = all cores, default: %d)"), DEFAULT_GENERATE_THREADS));
+    strUsage += HelpMessageOpt("-poolserver", strprintf(_("Start poolserver (default: %u)"), DEFAULT_POOLSERVER));
     if (showDebug)
         strUsage += HelpMessageOpt("-blockversion=<n>", "Override block version to test forking scenarios");
 
@@ -1320,10 +1319,6 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
         return false;
 #endif
 
-    bool fGenerate = gArgs.GetBoolArg("-regtest", false) ? false : DEFAULT_GENERATE;
-    // Generate coins in the background
-    GenerateDatacoins(fGenerate, gArgs.GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams);
-
     // ********************************************************* Step 6: network initialization
     // Note that we absolutely cannot open any actual connections
     // until the very end ("start node") as the UTXO/block state
@@ -1796,6 +1791,8 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     StartWallets(scheduler);
 
 #endif
+
+    GenerateDatacoins(DEFAULT_POOLSERVER, chainparams);
 
     // ********************************************************* Step 13: finished
     uiInterface.InitMessage(_("Done Loading"));

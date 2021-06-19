@@ -57,9 +57,6 @@
         <file alias="hd_enabled">res/icons/hd_enabled.png</file>
         <file alias="hd_disabled">res/icons/hd_disabled.png</file>
         <file alias="network_disabled">res/icons/network_disabled.png</file>
-        <file alias="mining">res/icons/mining.png</file>
-        <file alias="mining_active">res/icons/mining_active.png</file>
-        <file alias="mining_inactive">res/icons/mining_inactive.png</file>
         <file alias="multisig">res/icons/multisig.png</file>
     </qresource>
     <qresource prefix="/images">

@@ -24,7 +24,6 @@
 
 #include <qt/blockexplorer.h>
 #include <qt/datastore.h>
-#include <qt/miningpage.h>
 #include <qt/multisigdialog.h>
 #include <wallet/wallet.h>
 
@@ -61,7 +60,6 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     transactionsPage->setLayout(vbox);
 
     receiveCoinsPage = new ReceiveCoinsDialog(platformStyle);
-    miningPage = new MiningPage(platformStyle);
     sendCoinsPage = new SendCoinsDialog(platformStyle);
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
@@ -69,7 +67,6 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     addWidget(overviewPage);
     addWidget(transactionsPage);
-    addWidget(miningPage);
     addWidget(receiveCoinsPage);
     addWidget(sendCoinsPage);
 
@@ -128,7 +125,6 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
 
     // Put transaction list in tabs
     transactionView->setModel(_walletModel);
-    miningPage->setModel(_walletModel);
     overviewPage->setWalletModel(_walletModel);
     receiveCoinsPage->setModel(_walletModel);
     sendCoinsPage->setModel(_walletModel);
@@ -211,11 +207,6 @@ void WalletView::gotoMultisigDialog()
     multisigDialog->setAttribute(Qt::WA_DeleteOnClose);
     multisigDialog->setModel(walletModel);
     multisigDialog->showDialog();
-}
-
-void WalletView::gotoMiningPage()
-{
-    setCurrentWidget(miningPage);
 }
 
 void WalletView::gotoReceiveCoinsPage()

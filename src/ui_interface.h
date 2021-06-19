@@ -86,9 +86,6 @@ public:
     /** Network activity state changed. */
     boost::signals2::signal<void (bool networkActive)> NotifyNetworkActiveChanged;
 
-    /** Mining state changed. */
-    boost::signals2::signal<void (bool isMining, double hashrate)> NotifyMiningstatusChanged;
-
     /**
      * Status bar alerts changed.
      */

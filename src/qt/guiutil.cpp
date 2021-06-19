@@ -1042,16 +1042,6 @@ void ClickableProgressBar::mouseReleaseEvent(QMouseEvent *event)
     Q_EMIT clicked(event->pos());
 }
 
-int MaxThreads() {
-    int nThreads = boost::thread::hardware_concurrency();
-
-    int nUseThreads = gArgs.GetArg("-genproclimit", -1);
-    if (nUseThreads < 0) {
-        nUseThreads = nThreads;
-    }
-    return nUseThreads;
-}
-
 int64_t GetHashRate() {
 
     if (GetTimeMillis() - nHPSTimerStart > 8000)

@@ -131,7 +131,6 @@ QT_FORMS_UI = \
   qt/forms/editaddressdialog.ui \
   qt/forms/helpmessagedialog.ui \
   qt/forms/intro.ui \
-  qt/forms/miningpage.ui \
   qt/forms/modaloverlay.ui \
   qt/forms/multisigaddressentry.ui \
   qt/forms/multisigdialog.ui \
@@ -169,7 +168,6 @@ QT_MOC_CPP = \
   qt/moc_intro.cpp \
   qt/moc_macdockiconhandler.cpp \
   qt/moc_macnotificationhandler.cpp \
-  qt/moc_miningpage.cpp \
   qt/moc_modaloverlay.cpp \
   qt/moc_multisigaddressentry.cpp \
   qt/moc_multisigdialog.cpp \
@@ -247,7 +245,6 @@ BITCOIN_QT_H = \
   qt/intro.h \
   qt/macdockiconhandler.h \
   qt/macnotificationhandler.h \
-  qt/miningpage.h \
   qt/modaloverlay.h \
   qt/multisigaddressentry.h \
   qt/multisigdialog.h \
@@ -328,7 +325,6 @@ RES_ICONS = \
   qt/res/icons/lock_open.png \
   qt/res/icons/logo.png \
   qt/res/icons/logo_testnet.png \
-  qt/res/icons/mining.png \
   qt/res/icons/multisig.png \
   qt/res/icons/network_disabled.png \
   qt/res/icons/norvehc.png \
@@ -386,7 +382,6 @@ BITCOIN_QT_WALLET_CPP = \
   qt/datastore.cpp \
   qt/editaddressdialog.cpp \
   qt/hashrategraphwidget.cpp \
-  qt/miningpage.cpp \
   qt/multisigaddressentry.cpp \
   qt/multisigdialog.cpp \
   qt/multisiginputentry.cpp \

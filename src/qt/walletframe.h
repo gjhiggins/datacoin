@@ -74,8 +74,6 @@ public Q_SLOTS:
     void gotoBlockExplorerPage();
     /** Switch to Datastore page */
     void gotoDatastorePage();
-    /** Switch to mining page */
-    void gotoMiningPage();
     /** Switch to multisig dialog */
     void gotoMultisigDialog();
     /** Switch to receive coins page */
