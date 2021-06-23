@@ -71,6 +71,8 @@ public:
         return (nBits == 0);
     }
 
+    uint256 GetHash() const;
+
     // NOTE: PRIMECOIN header hash does not include prime certificate
     // This hash is used to check POW. As noted above, bnPrimeChainMultiplier hash isn't included
     uint256 GetHeaderHash() const
@@ -78,16 +80,10 @@ public:
         // NOTE: DATACOIN changed. Changing hashing
         //return Hash(BEGIN(nVersion), END(nNonce));
 
-        //CDataStream ss(SER_GETHASH, 0);
-        //ss << nVersion << hashPrevBlock << hashMerkleRoot << nTime << nBits << nNonce;
-        //return Hash(ss.begin(), ss.end());
-
         CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
         ss << nVersion << hashPrevBlock << hashMerkleRoot << nTime << nBits << nNonce;
         return ss.GetHash();
     }
-
-	uint256 GetHash() const;
 
     int64_t GetBlockTime() const
     {
