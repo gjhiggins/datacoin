@@ -18,6 +18,7 @@
 #include <net.h>
 #include <policy/fees.h>
 #include <pow.h>
+#include <prime/prime.h>
 #include <rpc/blockchain.h>
 #include <rpc/mining.h>
 #include <rpc/server.h>
@@ -27,7 +28,6 @@
 #include <validationinterface.h>
 #include <wallet/wallet.h>
 #include <warnings.h>
-#include <prime/prime.h>
 
 #include <memory>
 #include <stdint.h>
@@ -746,7 +746,14 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
 
         // Create new block
         CScript scriptDummy = CScript() << OP_TRUE;
+        /* DATACOIN orig code
         pblocktemplate = BlockAssembler(Params()).CreateNewBlock(scriptDummy, fSupportsSegwit);
+        */
+        std::shared_ptr<CReserveScript> coinbase_script;
+        if(!vpwallets.empty()) {
+            vpwallets[0]->GetScriptForMining(coinbase_script);
+        }
+        pblocktemplate = BlockAssembler(Params()).CreateNewBlock(vpwallets.empty() ? scriptDummy : coinbase_script->reserveScript, fSupportsSegwit);
         if (!pblocktemplate)
             throw JSONRPCError(RPC_OUT_OF_MEMORY, "Out of memory");
 
@@ -943,6 +950,7 @@ UniValue submitblock(const JSONRPCRequest& request)
 
     std::shared_ptr<CBlock> blockptr = std::make_shared<CBlock>();
     CBlock& block = *blockptr;
+    // std::cout << "Received blockhex: " << request.params[0].get_str() << std::endl;
     if (!DecodeHexBlk(block, request.params[0].get_str())) {
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
     }
