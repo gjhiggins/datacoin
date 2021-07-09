@@ -157,7 +157,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
         // setup Plot
 
         // give the axes some labels:
-        ui->workplot->xAxis->setLabel("Last 5 days (7200 blocks)");
+        ui->workplot->xAxis->setLabel("Last 7 days (10080 blocks)");
         ui->workplot->yAxis->setLabel("Difficulty");
         ui->workplot->yAxis2->setLabel("Hash rate");
         ui->workplot->yAxis2->setVisible(true);
@@ -342,7 +342,7 @@ void OverviewPage::updatePlot(int count)
     // Double Check to make sure we don't try to update the plot when it is disabled
     if (!gArgs.GetBoolArg("-chart", DEFAULT_CHARTPLOTTING)) { return; }
 
-    int numLookBack = 7200;
+    int numLookBack = 10080;
     double diffMax = 0;
     double diffMin = 100;
     double hashMax = 0;
