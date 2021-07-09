@@ -74,7 +74,7 @@ public:
     uint256 GetHash() const;
 
     // NOTE: PRIMECOIN header hash does not include prime certificate
-    // This hash is used to check POW. As noted above, bnPrimeChainMultiplier hash isn't included
+    // DATACOIN: This hash is used to check POW. As noted above, bnPrimeChainMultiplier hash isn't included
     uint256 GetHeaderHash() const
     {
         // NOTE: DATACOIN changed. Changing hashing
