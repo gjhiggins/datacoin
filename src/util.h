@@ -114,6 +114,7 @@ namespace BCLog {
         COINDB      = (1 << 18),
         QT          = (1 << 19),
         LEVELDB     = (1 << 20),
+        DANDELION   = (1 << 21),
         DEVEL       = (1 << 22),
         ALL         = ~(uint32_t)0,
     };
