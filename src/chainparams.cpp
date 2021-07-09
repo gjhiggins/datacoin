@@ -90,7 +90,7 @@ public:
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // a weeks
         consensus.nPowTargetSpacing = 60; // one-minute blocks
-        consensus.nCoinbaseMaturity = 100;
+        consensus.nCoinbaseMaturity = 3000;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
 
