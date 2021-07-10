@@ -2620,9 +2620,6 @@ bool CChainState::ActivateBestChain(CValidationState &state, const CChainParams&
     CBlockIndex *pindexMostWork = nullptr;
     CBlockIndex *pindexNewTip = nullptr;
     int nStopAtHeight = gArgs.GetArg("-stopatheight", DEFAULT_STOPATHEIGHT);
-    /* FIXME gjh unused - should it be?
-    bool fInitialDownload = true;
-    */
     bool fShutdownRequested;
     do {
         boost::this_thread::interruption_point();
