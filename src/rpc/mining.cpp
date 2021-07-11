@@ -236,7 +236,7 @@ UniValue generatetoaddress(const JSONRPCRequest& request)
 
 bool getgenerate()
 {
-    return gArgs.GetBoolArg("-gen", DEFAULT_POOLSERVER);
+    return gArgs.GetBoolArg("-gen", DEFAULT_GENERATE);
 }
 
 UniValue getgenerate(const JSONRPCRequest& request)
@@ -244,8 +244,8 @@ UniValue getgenerate(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() != 0)
         throw std::runtime_error(
             "getgenerate\n"
-            "\nReturn if the poolserver is set running or not. The default is true.\n"
-            "It is set with the command line argument -poolserver (or datacoin.conf setting poolserver)\n"
+            "\nReturn if the server is set to generate coins or not. The default is false.\n"
+            "It is set with the command line argument -gen (or gapcoin.conf setting gen)\n"
             "It can also be set with the setgenerate call.\n"
             "\nResult\n"
             "true|false      (boolean) If the server is set to generate coins or not\n"
@@ -255,7 +255,7 @@ UniValue getgenerate(const JSONRPCRequest& request)
         );
 
     LOCK(cs_main);
-    return gArgs.GetBoolArg("-poolserver", DEFAULT_POOLSERVER);
+    return gArgs.GetBoolArg("-gen", DEFAULT_GENERATE);
 }
 
 UniValue setgenerate(const JSONRPCRequest& request)
@@ -285,7 +285,6 @@ UniValue setgenerate(const JSONRPCRequest& request)
     if (request.params.size() > 0)
         fGenerate = request.params[0].get_bool();
 
-    gArgs.SoftSetArg("-poolserver", (fGenerate ? "1" : "0"));
     GenerateDatacoins(fGenerate, Params());
 
     std::string msg = fGenerate ? "true" : "false";
@@ -308,11 +307,6 @@ UniValue getmininginfo(const JSONRPCRequest& request)
             "  \"currentblocktx\": nnn,     (numeric) The last block transaction\n"
             "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
             "  \"pooledtx\": n              (numeric) The size of the mempool\n"
-            "  \"generate\": true|false     (boolean) If the generation is on or off (see getgenerate or setgenerate calls)\n"
-            "  \"sieveextensions\": n       (numeric, optional) The number of sieve extensions used.\n"
-            "  \"sievefilterprimes\": n     (numeric, optional) The amount of primes used in the sieve.\n"
-            "  \"sievesize\": n             (numeric, optional) The size of the sieve.\n"
-            "  \"primespersec\": n          (numeric) The primes per second of the generation, or 0 if no generation.\n"
             "  \"chain\": \"xxxx\",           (string) current network name as defined in BIP70 (main, test, regtest)\n"
             "  \"warnings\": \"...\"          (string) any network and blockchain warnings\n"
             "  \"errors\": \"...\"            (string) DEPRECATED. Same as warnings. Only shown when gapcoind is started with -deprecatedrpc=getmininginfo\n"
@@ -334,11 +328,6 @@ UniValue getmininginfo(const JSONRPCRequest& request)
     obj.push_back(Pair("difficulty",       getdifficulty(request)));
     //obj.push_back(Pair("networkhashps",    getnetworkhashps(request)));
     obj.push_back(Pair("pooledtx",         (uint64_t)mempool.size()));
-    obj.push_back(Pair("generate",      (bool)gArgs.GetBoolArg("-poolserver", false))); // NOTE: DATACOIN added
-    obj.push_back(Pair("sieveextensions",(int)nSieveExtensions));
-    obj.push_back(Pair("sievefilterprimes",(int)nSieveFilterPrimes));
-    obj.push_back(Pair("sievesize",     (int)nSieveSize));
-    obj.push_back(Pair("primespersec",     (boost::int64_t)dPrimesPerSec));
     obj.push_back(Pair("chain",            Params().NetworkIDString()));
     if (IsDeprecatedRPCEnabled("getmininginfo")) {
         obj.push_back(Pair("errors",       GetWarnings("statusbar")));

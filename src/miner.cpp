@@ -198,7 +198,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     pblocktemplate->vTxFees[0] = -nFees;
 	
 
-    if ((gArgs.IsArgSet("-debug")) || gArgs.GetBoolArg("-printmining", false) || !gArgs.GetBoolArg("-poolserver", false))
+    if ((gArgs.IsArgSet("-debug")) || gArgs.GetBoolArg("-printmining", false))
         LogPrintf("CreateNewBlock(): block weight: %u txs: %u fees: %ld sigops %d\n", GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
 
     // Fill in header
@@ -504,16 +504,16 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, std::shared_ptr<CReserveScript> 
     // Found a solution
     {
         LOCK(cs_main);
-        if (pblock->hashPrevBlock != pindexBestHeader->GetBlockHash())// pcoinsTip->GetBestBlock()) //TODO: chainActive.Tip()->GetBlockHash()?
+        if (pblock->hashPrevBlock != pindexBestHeader->GetBlockHash())
             return error(strprintf("DatacoinMiner %s : generated block is stale", nThread).c_str());
-
-    // Inform about the new block
-    GetMainSignals().BlockFound(pblock->GetHash());
 
         // Process this block the same as if we had received it from another node
         bool fNewBlock;
         if (!ProcessNewBlock(Params(), std::make_shared<const CBlock>(*pblock) , true, &fNewBlock))
             return error(strprintf("DatacoinMiner %s : ProcessNewBlock, block not accepted", nThread).c_str());
+
+        // Inform about the new block
+        GetMainSignals().BlockFound(pblock->GetHash());
 
         reserve_script->KeepScript();
 
@@ -537,7 +537,7 @@ void GenerateDatacoins(bool fGenerate, const CChainParams& chainparams)
     // pro tem, whilst developing
     bool use_server = true;
 
-    if (fDebug && (gArgs.GetBoolArg("-printmining", false) || gArgs.GetBoolArg("-poolserver", false)))
+    if (fDebug && (gArgs.GetBoolArg("-printmining", false)))
         LogPrintf("[PrimeServer] GenerateDatacoins: %s\n", fGenerate ? "true" : "false");
 	
     // fGenerate off, so kill and running pool servers

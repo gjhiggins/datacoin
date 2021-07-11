@@ -10,12 +10,10 @@
 
 #include <univalue.h>
 
-static const bool DEFAULT_POOLSERVER = true;
+static const bool DEFAULT_GENERATE = true;
 
 /** Generate blocks (mine) */
 UniValue generateBlocks(std::shared_ptr<CReserveScript> coinbaseScript, int nGenerate, uint64_t nMaxTries, bool keepScript);
-
-bool getgenerate();
 
 /** Check bounds on a command line confirm target */
 unsigned int ParseConfirmTarget(const UniValue& value);

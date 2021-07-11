@@ -127,10 +127,9 @@ static void InitDefaultsSignal() {
   ::pool::proto::Signal::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<2> scc_info_Signal =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsSignal}, {
-      &protobuf_protocol_2eproto::scc_info_Block.base,
-      &protobuf_protocol_2eproto::scc_info_Work.base,}};
+::google::protobuf::internal::SCCInfo<1> scc_info_Signal =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSignal}, {
+      &protobuf_protocol_2eproto::scc_info_Block.base,}};
 
 static void InitDefaultsClientStats() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -306,10 +305,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Signal, type_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Signal, block_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Signal, work_),
-  2,
-  0,
   1,
+  0,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ClientStats, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ClientStats, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -326,19 +323,17 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ClientStats, errors_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ClientStats, ngpus_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ClientStats, height_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ClientStats, unittype_),
   0,
   1,
   2,
   3,
   4,
   5,
-  6,
   7,
   8,
   9,
   10,
-  11,
+  6,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Share, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Share, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -360,26 +355,22 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Share, chaintype_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Share, isblock_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Share, genvalue_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Share, bignonce_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Share, proofofwork_),
   0,
   1,
-  8,
-  9,
+  6,
+  7,
   2,
   3,
+  8,
+  9,
   10,
-  11,
-  12,
   4,
   5,
+  11,
+  12,
   13,
   14,
   15,
-  16,
-  17,
-  6,
-  7,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Request, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Request, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -408,14 +399,10 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ServerInfo, router_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ServerInfo, pub_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ServerInfo, target_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ServerInfo, versionmajor_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::ServerInfo, versionminor_),
   0,
   1,
   2,
   3,
-  4,
-  5,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Reply, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::pool::proto::Reply, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -478,15 +465,15 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 10, sizeof(::pool::proto::Block)},
   { 15, 24, sizeof(::pool::proto::Work)},
-  { 28, 36, sizeof(::pool::proto::Signal)},
-  { 39, 56, sizeof(::pool::proto::ClientStats)},
-  { 68, 91, sizeof(::pool::proto::Share)},
-  { 109, 121, sizeof(::pool::proto::Request)},
-  { 128, 139, sizeof(::pool::proto::ServerInfo)},
-  { 145, 157, sizeof(::pool::proto::Reply)},
-  { 164, 172, sizeof(::pool::proto::ReqStats)},
-  { 175, 186, sizeof(::pool::proto::ServerStats)},
-  { 192, 200, sizeof(::pool::proto::Data)},
+  { 28, 35, sizeof(::pool::proto::Signal)},
+  { 37, 53, sizeof(::pool::proto::ClientStats)},
+  { 64, 85, sizeof(::pool::proto::Share)},
+  { 101, 113, sizeof(::pool::proto::Request)},
+  { 120, 129, sizeof(::pool::proto::ServerInfo)},
+  { 133, 145, sizeof(::pool::proto::Reply)},
+  { 152, 160, sizeof(::pool::proto::ReqStats)},
+  { 163, 174, sizeof(::pool::proto::ServerStats)},
+  { 180, 188, sizeof(::pool::proto::Data)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -528,54 +515,51 @@ void AddDescriptorsImpl() {
       "\006height\030\001 \002(\r\022\014\n\004hash\030\002 \002(\t\022\020\n\010prevhash\030"
       "\003 \002(\t\022\017\n\007reqdiff\030\004 \002(\r\022\020\n\010minshare\030\005 \002(\r"
       "\"B\n\004Work\022\016\n\006height\030\001 \002(\r\022\016\n\006merkle\030\002 \002(\t"
-      "\022\014\n\004time\030\003 \002(\r\022\014\n\004bits\030\004 \002(\r\"\225\001\n\006Signal\022"
-      "%\n\004type\030\001 \002(\0162\027.pool.proto.Signal.Type\022 "
-      "\n\005block\030\002 \001(\0132\021.pool.proto.Block\022\036\n\004work"
-      "\030\003 \001(\0132\020.pool.proto.Work\"\"\n\004Type\022\014\n\010NEWB"
-      "LOCK\020\001\022\014\n\010SHUTDOWN\020\002\"\315\001\n\013ClientStats\022\014\n\004"
-      "addr\030\001 \002(\t\022\014\n\004name\030\002 \002(\t\022\020\n\010clientid\030\003 \002"
-      "(\006\022\022\n\ninstanceid\030\004 \002(\006\022\017\n\007version\030\n \002(\r\022"
-      "\013\n\003cpd\030\013 \002(\002\022\017\n\007latency\030\014 \002(\r\022\014\n\004temp\030\r "
-      "\002(\r\022\016\n\006errors\030\016 \002(\r\022\r\n\005ngpus\030\017 \002(\r\022\016\n\006he"
-      "ight\030\020 \002(\r\022\020\n\010unitType\030\021 \001(\r\"\254\002\n\005Share\022\014"
-      "\n\004addr\030\001 \002(\t\022\014\n\004name\030\002 \002(\t\022\020\n\010clientid\030\003"
-      " \002(\006\022\r\n\005gpuid\030\004 \001(\r\022\014\n\004hash\030\n \002(\t\022\016\n\006mer"
-      "kle\030\013 \002(\t\022\014\n\004time\030\014 \002(\r\022\014\n\004bits\030\r \002(\r\022\r\n"
-      "\005nonce\030\016 \002(\r\022\r\n\005multi\030\017 \002(\t\022\021\n\tblockhash"
-      "\030\020 \001(\t\022\016\n\006height\030\024 \002(\r\022\016\n\006length\030\025 \002(\r\022\021"
-      "\n\tchaintype\030\026 \002(\r\022\017\n\007isblock\030\027 \002(\010\022\020\n\010ge"
-      "nvalue\030\030 \001(\004\022\020\n\010bigNonce\030\031 \001(\t\022\023\n\013proofO"
-      "fWork\030\032 \001(\014\"\211\002\n\007Request\022&\n\004type\030\001 \002(\0162\030."
-      "pool.proto.Request.Type\022\r\n\005reqid\030\002 \002(\r\022\017"
-      "\n\007version\030\n \001(\r\022\016\n\006height\030\013 \001(\r\022\020\n\010reqno"
-      "nce\030\014 \001(\014\022 \n\005share\030\024 \001(\0132\021.pool.proto.Sh"
-      "are\022&\n\005stats\030\025 \001(\0132\027.pool.proto.ClientSt"
-      "ats\"J\n\004Type\022\010\n\004NONE\020\000\022\013\n\007CONNECT\020\001\022\013\n\007GE"
-      "TWORK\020\002\022\t\n\005SHARE\020\003\022\t\n\005STATS\020\004\022\010\n\004PING\020\005\""
-      "s\n\nServerInfo\022\014\n\004host\030\001 \002(\t\022\016\n\006router\030\002 "
-      "\002(\r\022\013\n\003pub\030\003 \002(\r\022\016\n\006target\030\004 \002(\r\022\024\n\014vers"
-      "ionMajor\030\005 \001(\r\022\024\n\014versionMinor\030\006 \001(\r\"\304\002\n"
-      "\005Reply\022&\n\004type\030\001 \002(\0162\030.pool.proto.Reques"
-      "t.Type\022\r\n\005reqid\030\002 \002(\r\022(\n\005error\030\n \002(\0162\031.p"
-      "ool.proto.Reply.ErrType\022\016\n\006errstr\030\013 \001(\t\022"
-      "%\n\005sinfo\030\024 \001(\0132\026.pool.proto.ServerInfo\022\036"
-      "\n\004work\030\025 \001(\0132\020.pool.proto.Work\022 \n\005block\030"
-      "\026 \001(\0132\021.pool.proto.Block\"a\n\007ErrType\022\010\n\004N"
-      "ONE\020\000\022\013\n\007VERSION\020\001\022\n\n\006HEIGHT\020\002\022\014\n\010REQNON"
-      "CE\020\003\022\t\n\005STALE\020\004\022\013\n\007INVALID\020\005\022\r\n\tDUPLICAT"
-      "E\020\006\"p\n\010ReqStats\022)\n\007reqtype\030\001 \002(\0162\030.pool."
-      "proto.Request.Type\022*\n\007errtype\030\002 \002(\0162\031.po"
-      "ol.proto.Reply.ErrType\022\r\n\005count\030\003 \002(\r\"\202\001"
-      "\n\013ServerStats\022\014\n\004name\030\001 \002(\t\022\016\n\006thread\030\002 "
-      "\002(\r\022\017\n\007workers\030\n \002(\r\022\017\n\007latency\030\013 \002(\r\022\013\n"
-      "\003cpd\030\014 \002(\002\022&\n\010reqstats\030\024 \003(\0132\024.pool.prot"
-      "o.ReqStats\"\204\001\n\004Data\022 \n\005share\030\001 \001(\0132\021.poo"
-      "l.proto.Share\022,\n\013clientstats\030\002 \001(\0132\027.poo"
-      "l.proto.ClientStats\022,\n\013serverstats\030\003 \001(\013"
-      "2\027.pool.proto.ServerStats"
+      "\022\014\n\004time\030\003 \002(\r\022\014\n\004bits\030\004 \002(\r\"u\n\006Signal\022%"
+      "\n\004type\030\001 \002(\0162\027.pool.proto.Signal.Type\022 \n"
+      "\005block\030\002 \001(\0132\021.pool.proto.Block\"\"\n\004Type\022"
+      "\014\n\010NEWBLOCK\020\001\022\014\n\010SHUTDOWN\020\002\"\273\001\n\013ClientSt"
+      "ats\022\014\n\004addr\030\001 \002(\t\022\014\n\004name\030\002 \002(\t\022\020\n\010clien"
+      "tid\030\003 \002(\006\022\022\n\ninstanceid\030\004 \002(\006\022\017\n\007version"
+      "\030\n \002(\r\022\013\n\003cpd\030\013 \002(\002\022\017\n\007latency\030\014 \002(\r\022\014\n\004"
+      "temp\030\r \002(\r\022\016\n\006errors\030\016 \002(\r\022\r\n\005ngpus\030\017 \002("
+      "\r\022\016\n\006height\030\020 \002(\r\"\205\002\n\005Share\022\014\n\004addr\030\001 \002("
+      "\t\022\014\n\004name\030\002 \002(\t\022\020\n\010clientid\030\003 \002(\006\022\r\n\005gpu"
+      "id\030\004 \001(\r\022\014\n\004hash\030\n \002(\t\022\016\n\006merkle\030\013 \002(\t\022\014"
+      "\n\004time\030\014 \002(\r\022\014\n\004bits\030\r \002(\r\022\r\n\005nonce\030\016 \002("
+      "\r\022\r\n\005multi\030\017 \002(\t\022\021\n\tblockhash\030\020 \001(\t\022\016\n\006h"
+      "eight\030\024 \002(\r\022\016\n\006length\030\025 \002(\r\022\021\n\tchaintype"
+      "\030\026 \002(\r\022\017\n\007isblock\030\027 \002(\010\022\020\n\010genvalue\030\030 \001("
+      "\004\"\211\002\n\007Request\022&\n\004type\030\001 \002(\0162\030.pool.proto"
+      ".Request.Type\022\r\n\005reqid\030\002 \002(\r\022\017\n\007version\030"
+      "\n \001(\r\022\016\n\006height\030\013 \001(\r\022\020\n\010reqnonce\030\014 \001(\014\022"
+      " \n\005share\030\024 \001(\0132\021.pool.proto.Share\022&\n\005sta"
+      "ts\030\025 \001(\0132\027.pool.proto.ClientStats\"J\n\004Typ"
+      "e\022\010\n\004NONE\020\000\022\013\n\007CONNECT\020\001\022\013\n\007GETWORK\020\002\022\t\n"
+      "\005SHARE\020\003\022\t\n\005STATS\020\004\022\010\n\004PING\020\005\"G\n\nServerI"
+      "nfo\022\014\n\004host\030\001 \002(\t\022\016\n\006router\030\002 \002(\r\022\013\n\003pub"
+      "\030\003 \002(\r\022\016\n\006target\030\004 \002(\r\"\304\002\n\005Reply\022&\n\004type"
+      "\030\001 \002(\0162\030.pool.proto.Request.Type\022\r\n\005reqi"
+      "d\030\002 \002(\r\022(\n\005error\030\n \002(\0162\031.pool.proto.Repl"
+      "y.ErrType\022\016\n\006errstr\030\013 \001(\t\022%\n\005sinfo\030\024 \001(\013"
+      "2\026.pool.proto.ServerInfo\022\036\n\004work\030\025 \001(\0132\020"
+      ".pool.proto.Work\022 \n\005block\030\026 \001(\0132\021.pool.p"
+      "roto.Block\"a\n\007ErrType\022\010\n\004NONE\020\000\022\013\n\007VERSI"
+      "ON\020\001\022\n\n\006HEIGHT\020\002\022\014\n\010REQNONCE\020\003\022\t\n\005STALE\020"
+      "\004\022\013\n\007INVALID\020\005\022\r\n\tDUPLICATE\020\006\"p\n\010ReqStat"
+      "s\022)\n\007reqtype\030\001 \002(\0162\030.pool.proto.Request."
+      "Type\022*\n\007errtype\030\002 \002(\0162\031.pool.proto.Reply"
+      ".ErrType\022\r\n\005count\030\003 \002(\r\"\202\001\n\013ServerStats\022"
+      "\014\n\004name\030\001 \002(\t\022\016\n\006thread\030\002 \002(\r\022\017\n\007workers"
+      "\030\n \002(\r\022\017\n\007latency\030\013 \002(\r\022\013\n\003cpd\030\014 \002(\002\022&\n\010"
+      "reqstats\030\024 \003(\0132\024.pool.proto.ReqStats\"\204\001\n"
+      "\004Data\022 \n\005share\030\001 \001(\0132\021.pool.proto.Share\022"
+      ",\n\013clientstats\030\002 \001(\0132\027.pool.proto.Client"
+      "Stats\022,\n\013serverstats\030\003 \001(\0132\027.pool.proto."
+      "ServerStats"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1945);
+      descriptor, 1811);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "protocol.proto", &protobuf_RegisterTypes);
 }
@@ -1555,13 +1539,10 @@ void Work::InternalSwap(Work* other) {
 void Signal::InitAsDefaultInstance() {
   ::pool::proto::_Signal_default_instance_._instance.get_mutable()->block_ = const_cast< ::pool::proto::Block*>(
       ::pool::proto::Block::internal_default_instance());
-  ::pool::proto::_Signal_default_instance_._instance.get_mutable()->work_ = const_cast< ::pool::proto::Work*>(
-      ::pool::proto::Work::internal_default_instance());
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Signal::kTypeFieldNumber;
 const int Signal::kBlockFieldNumber;
-const int Signal::kWorkFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Signal::Signal()
@@ -1581,19 +1562,12 @@ Signal::Signal(const Signal& from)
   } else {
     block_ = NULL;
   }
-  if (from.has_work()) {
-    work_ = new ::pool::proto::Work(*from.work_);
-  } else {
-    work_ = NULL;
-  }
   type_ = from.type_;
   // @@protoc_insertion_point(copy_constructor:pool.proto.Signal)
 }
 
 void Signal::SharedCtor() {
-  ::memset(&block_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&work_) -
-      reinterpret_cast<char*>(&block_)) + sizeof(work_));
+  block_ = NULL;
   type_ = 1;
 }
 
@@ -1604,7 +1578,6 @@ Signal::~Signal() {
 
 void Signal::SharedDtor() {
   if (this != internal_default_instance()) delete block_;
-  if (this != internal_default_instance()) delete work_;
 }
 
 void Signal::SetCachedSize(int size) const {
@@ -1628,14 +1601,10 @@ void Signal::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 7u) {
+  if (cached_has_bits & 3u) {
     if (cached_has_bits & 0x00000001u) {
       GOOGLE_DCHECK(block_ != NULL);
       block_->Clear();
-    }
-    if (cached_has_bits & 0x00000002u) {
-      GOOGLE_DCHECK(work_ != NULL);
-      work_->Clear();
     }
     type_ = 1;
   }
@@ -1685,18 +1654,6 @@ bool Signal::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .pool.proto.Work work = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_work()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -1725,7 +1682,7 @@ void Signal::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required .pool.proto.Signal.Type type = 1;
-  if (cached_has_bits & 0x00000004u) {
+  if (cached_has_bits & 0x00000002u) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->type(), output);
   }
@@ -1734,12 +1691,6 @@ void Signal::SerializeWithCachedSizes(
   if (cached_has_bits & 0x00000001u) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       2, this->_internal_block(), output);
-  }
-
-  // optional .pool.proto.Work work = 3;
-  if (cached_has_bits & 0x00000002u) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, this->_internal_work(), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -1758,7 +1709,7 @@ void Signal::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required .pool.proto.Signal.Type type = 1;
-  if (cached_has_bits & 0x00000004u) {
+  if (cached_has_bits & 0x00000002u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->type(), target);
   }
@@ -1768,13 +1719,6 @@ void Signal::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
         2, this->_internal_block(), deterministic, target);
-  }
-
-  // optional .pool.proto.Work work = 3;
-  if (cached_has_bits & 0x00000002u) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        3, this->_internal_work(), deterministic, target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -1799,22 +1743,13 @@ size_t Signal::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
   }
-  if (_has_bits_[0 / 32] & 3u) {
-    // optional .pool.proto.Block block = 2;
-    if (has_block()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
-          *block_);
-    }
-
-    // optional .pool.proto.Work work = 3;
-    if (has_work()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
-          *work_);
-    }
-
+  // optional .pool.proto.Block block = 2;
+  if (has_block()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *block_);
   }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -1843,14 +1778,11 @@ void Signal::MergeFrom(const Signal& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 7u) {
+  if (cached_has_bits & 3u) {
     if (cached_has_bits & 0x00000001u) {
       mutable_block()->::pool::proto::Block::MergeFrom(from.block());
     }
     if (cached_has_bits & 0x00000002u) {
-      mutable_work()->::pool::proto::Work::MergeFrom(from.work());
-    }
-    if (cached_has_bits & 0x00000004u) {
       type_ = from.type_;
     }
     _has_bits_[0] |= cached_has_bits;
@@ -1872,12 +1804,9 @@ void Signal::CopyFrom(const Signal& from) {
 }
 
 bool Signal::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000004) != 0x00000004) return false;
+  if ((_has_bits_[0] & 0x00000002) != 0x00000002) return false;
   if (has_block()) {
     if (!this->block_->IsInitialized()) return false;
-  }
-  if (has_work()) {
-    if (!this->work_->IsInitialized()) return false;
   }
   return true;
 }
@@ -1889,7 +1818,6 @@ void Signal::Swap(Signal* other) {
 void Signal::InternalSwap(Signal* other) {
   using std::swap;
   swap(block_, other->block_);
-  swap(work_, other->work_);
   swap(type_, other->type_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -1917,7 +1845,6 @@ const int ClientStats::kTempFieldNumber;
 const int ClientStats::kErrorsFieldNumber;
 const int ClientStats::kNgpusFieldNumber;
 const int ClientStats::kHeightFieldNumber;
-const int ClientStats::kUnitTypeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ClientStats::ClientStats()
@@ -1941,8 +1868,8 @@ ClientStats::ClientStats(const ClientStats& from)
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
   ::memcpy(&clientid_, &from.clientid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&unittype_) -
-    reinterpret_cast<char*>(&clientid_)) + sizeof(unittype_));
+    static_cast<size_t>(reinterpret_cast<char*>(&ngpus_) -
+    reinterpret_cast<char*>(&clientid_)) + sizeof(ngpus_));
   // @@protoc_insertion_point(copy_constructor:pool.proto.ClientStats)
 }
 
@@ -1950,8 +1877,8 @@ void ClientStats::SharedCtor() {
   addr_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&clientid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&unittype_) -
-      reinterpret_cast<char*>(&clientid_)) + sizeof(unittype_));
+      reinterpret_cast<char*>(&ngpus_) -
+      reinterpret_cast<char*>(&clientid_)) + sizeof(ngpus_));
 }
 
 ClientStats::~ClientStats() {
@@ -1995,13 +1922,13 @@ void ClientStats::Clear() {
   }
   if (cached_has_bits & 252u) {
     ::memset(&clientid_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&temp_) -
-        reinterpret_cast<char*>(&clientid_)) + sizeof(temp_));
+        reinterpret_cast<char*>(&latency_) -
+        reinterpret_cast<char*>(&clientid_)) + sizeof(latency_));
   }
-  if (cached_has_bits & 3840u) {
-    ::memset(&errors_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&unittype_) -
-        reinterpret_cast<char*>(&errors_)) + sizeof(unittype_));
+  if (cached_has_bits & 1792u) {
+    ::memset(&temp_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&ngpus_) -
+        reinterpret_cast<char*>(&temp_)) + sizeof(ngpus_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -2175,20 +2102,6 @@ bool ClientStats::MergePartialFromCodedStream(
         break;
       }
 
-      // optional uint32 unitType = 17;
-      case 17: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(136u /* 136 & 0xFF */)) {
-          set_has_unittype();
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &unittype_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -2257,33 +2170,28 @@ void ClientStats::SerializeWithCachedSizes(
   }
 
   // required uint32 latency = 12;
-  if (cached_has_bits & 0x00000040u) {
+  if (cached_has_bits & 0x00000080u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(12, this->latency(), output);
   }
 
   // required uint32 temp = 13;
-  if (cached_has_bits & 0x00000080u) {
+  if (cached_has_bits & 0x00000100u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(13, this->temp(), output);
   }
 
   // required uint32 errors = 14;
-  if (cached_has_bits & 0x00000100u) {
+  if (cached_has_bits & 0x00000200u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(14, this->errors(), output);
   }
 
   // required uint32 ngpus = 15;
-  if (cached_has_bits & 0x00000200u) {
+  if (cached_has_bits & 0x00000400u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(15, this->ngpus(), output);
   }
 
   // required uint32 height = 16;
-  if (cached_has_bits & 0x00000400u) {
+  if (cached_has_bits & 0x00000040u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(16, this->height(), output);
-  }
-
-  // optional uint32 unitType = 17;
-  if (cached_has_bits & 0x00000800u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(17, this->unittype(), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -2344,33 +2252,28 @@ void ClientStats::SerializeWithCachedSizes(
   }
 
   // required uint32 latency = 12;
-  if (cached_has_bits & 0x00000040u) {
+  if (cached_has_bits & 0x00000080u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(12, this->latency(), target);
   }
 
   // required uint32 temp = 13;
-  if (cached_has_bits & 0x00000080u) {
+  if (cached_has_bits & 0x00000100u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(13, this->temp(), target);
   }
 
   // required uint32 errors = 14;
-  if (cached_has_bits & 0x00000100u) {
+  if (cached_has_bits & 0x00000200u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(14, this->errors(), target);
   }
 
   // required uint32 ngpus = 15;
-  if (cached_has_bits & 0x00000200u) {
+  if (cached_has_bits & 0x00000400u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(15, this->ngpus(), target);
   }
 
   // required uint32 height = 16;
-  if (cached_has_bits & 0x00000400u) {
+  if (cached_has_bits & 0x00000040u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(16, this->height(), target);
-  }
-
-  // optional uint32 unitType = 17;
-  if (cached_has_bits & 0x00000800u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(17, this->unittype(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -2421,6 +2324,13 @@ size_t ClientStats::RequiredFieldsByteSizeFallback() const {
     total_size += 1 + 4;
   }
 
+  if (has_height()) {
+    // required uint32 height = 16;
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->height());
+  }
+
   if (has_latency()) {
     // required uint32 latency = 12;
     total_size += 1 +
@@ -2447,13 +2357,6 @@ size_t ClientStats::RequiredFieldsByteSizeFallback() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->ngpus());
-  }
-
-  if (has_height()) {
-    // required uint32 height = 16;
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->height());
   }
 
   return total_size;
@@ -2492,6 +2395,11 @@ size_t ClientStats::ByteSizeLong() const {
     // required float cpd = 11;
     total_size += 1 + 4;
 
+    // required uint32 height = 16;
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->height());
+
     // required uint32 latency = 12;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt32Size(
@@ -2512,21 +2420,9 @@ size_t ClientStats::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->ngpus());
 
-    // required uint32 height = 16;
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->height());
-
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
-  // optional uint32 unitType = 17;
-  if (has_unittype()) {
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->unittype());
-  }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -2577,25 +2473,22 @@ void ClientStats::MergeFrom(const ClientStats& from) {
       cpd_ = from.cpd_;
     }
     if (cached_has_bits & 0x00000040u) {
-      latency_ = from.latency_;
+      height_ = from.height_;
     }
     if (cached_has_bits & 0x00000080u) {
-      temp_ = from.temp_;
+      latency_ = from.latency_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
-  if (cached_has_bits & 3840u) {
+  if (cached_has_bits & 1792u) {
     if (cached_has_bits & 0x00000100u) {
-      errors_ = from.errors_;
+      temp_ = from.temp_;
     }
     if (cached_has_bits & 0x00000200u) {
-      ngpus_ = from.ngpus_;
+      errors_ = from.errors_;
     }
     if (cached_has_bits & 0x00000400u) {
-      height_ = from.height_;
-    }
-    if (cached_has_bits & 0x00000800u) {
-      unittype_ = from.unittype_;
+      ngpus_ = from.ngpus_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -2634,12 +2527,11 @@ void ClientStats::InternalSwap(ClientStats* other) {
   swap(instanceid_, other->instanceid_);
   swap(version_, other->version_);
   swap(cpd_, other->cpd_);
+  swap(height_, other->height_);
   swap(latency_, other->latency_);
   swap(temp_, other->temp_);
   swap(errors_, other->errors_);
   swap(ngpus_, other->ngpus_);
-  swap(height_, other->height_);
-  swap(unittype_, other->unittype_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
@@ -2671,8 +2563,6 @@ const int Share::kLengthFieldNumber;
 const int Share::kChaintypeFieldNumber;
 const int Share::kIsblockFieldNumber;
 const int Share::kGenvalueFieldNumber;
-const int Share::kBigNonceFieldNumber;
-const int Share::kProofOfWorkFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Share::Share()
@@ -2711,14 +2601,6 @@ Share::Share(const Share& from)
   if (from.has_blockhash()) {
     blockhash_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.blockhash_);
   }
-  bignonce_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.has_bignonce()) {
-    bignonce_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bignonce_);
-  }
-  proofofwork_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.has_proofofwork()) {
-    proofofwork_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.proofofwork_);
-  }
   ::memcpy(&clientid_, &from.clientid_,
     static_cast<size_t>(reinterpret_cast<char*>(&genvalue_) -
     reinterpret_cast<char*>(&clientid_)) + sizeof(genvalue_));
@@ -2732,8 +2614,6 @@ void Share::SharedCtor() {
   merkle_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   multi_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   blockhash_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  bignonce_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  proofofwork_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&clientid_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&genvalue_) -
       reinterpret_cast<char*>(&clientid_)) + sizeof(genvalue_));
@@ -2751,8 +2631,6 @@ void Share::SharedDtor() {
   merkle_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   multi_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   blockhash_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  bignonce_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  proofofwork_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void Share::SetCachedSize(int size) const {
@@ -2776,7 +2654,7 @@ void Share::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 255u) {
+  if (cached_has_bits & 63u) {
     if (cached_has_bits & 0x00000001u) {
       addr_.ClearNonDefaultToEmptyNoArena();
     }
@@ -2795,22 +2673,16 @@ void Share::Clear() {
     if (cached_has_bits & 0x00000020u) {
       blockhash_.ClearNonDefaultToEmptyNoArena();
     }
-    if (cached_has_bits & 0x00000040u) {
-      bignonce_.ClearNonDefaultToEmptyNoArena();
-    }
-    if (cached_has_bits & 0x00000080u) {
-      proofofwork_.ClearNonDefaultToEmptyNoArena();
-    }
+  }
+  if (cached_has_bits & 192u) {
+    ::memset(&clientid_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&gpuid_) -
+        reinterpret_cast<char*>(&clientid_)) + sizeof(gpuid_));
   }
   if (cached_has_bits & 65280u) {
-    ::memset(&clientid_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&chaintype_) -
-        reinterpret_cast<char*>(&clientid_)) + sizeof(chaintype_));
-  }
-  if (cached_has_bits & 196608u) {
-    ::memset(&isblock_, 0, static_cast<size_t>(
+    ::memset(&time_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&genvalue_) -
-        reinterpret_cast<char*>(&isblock_)) + sizeof(genvalue_));
+        reinterpret_cast<char*>(&time_)) + sizeof(genvalue_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -3062,34 +2934,6 @@ bool Share::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string bigNonce = 25;
-      case 25: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(202u /* 202 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_bignonce()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-            this->bignonce().data(), static_cast<int>(this->bignonce().length()),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "pool.proto.Share.bigNonce");
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // optional bytes proofOfWork = 26;
-      case 26: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(210u /* 210 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_proofofwork()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -3138,12 +2982,12 @@ void Share::SerializeWithCachedSizes(
   }
 
   // required fixed64 clientid = 3;
-  if (cached_has_bits & 0x00000100u) {
+  if (cached_has_bits & 0x00000040u) {
     ::google::protobuf::internal::WireFormatLite::WriteFixed64(3, this->clientid(), output);
   }
 
   // optional uint32 gpuid = 4;
-  if (cached_has_bits & 0x00000200u) {
+  if (cached_has_bits & 0x00000080u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->gpuid(), output);
   }
 
@@ -3168,17 +3012,17 @@ void Share::SerializeWithCachedSizes(
   }
 
   // required uint32 time = 12;
-  if (cached_has_bits & 0x00000400u) {
+  if (cached_has_bits & 0x00000100u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(12, this->time(), output);
   }
 
   // required uint32 bits = 13;
-  if (cached_has_bits & 0x00000800u) {
+  if (cached_has_bits & 0x00000200u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(13, this->bits(), output);
   }
 
   // required uint32 nonce = 14;
-  if (cached_has_bits & 0x00001000u) {
+  if (cached_has_bits & 0x00000400u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(14, this->nonce(), output);
   }
 
@@ -3203,44 +3047,28 @@ void Share::SerializeWithCachedSizes(
   }
 
   // required uint32 height = 20;
-  if (cached_has_bits & 0x00002000u) {
+  if (cached_has_bits & 0x00000800u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(20, this->height(), output);
   }
 
   // required uint32 length = 21;
-  if (cached_has_bits & 0x00004000u) {
+  if (cached_has_bits & 0x00001000u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(21, this->length(), output);
   }
 
   // required uint32 chaintype = 22;
-  if (cached_has_bits & 0x00008000u) {
+  if (cached_has_bits & 0x00002000u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(22, this->chaintype(), output);
   }
 
   // required bool isblock = 23;
-  if (cached_has_bits & 0x00010000u) {
+  if (cached_has_bits & 0x00004000u) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(23, this->isblock(), output);
   }
 
   // optional uint64 genvalue = 24;
-  if (cached_has_bits & 0x00020000u) {
+  if (cached_has_bits & 0x00008000u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(24, this->genvalue(), output);
-  }
-
-  // optional string bigNonce = 25;
-  if (cached_has_bits & 0x00000040u) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->bignonce().data(), static_cast<int>(this->bignonce().length()),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "pool.proto.Share.bigNonce");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      25, this->bignonce(), output);
-  }
-
-  // optional bytes proofOfWork = 26;
-  if (cached_has_bits & 0x00000080u) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      26, this->proofofwork(), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -3281,12 +3109,12 @@ void Share::SerializeWithCachedSizes(
   }
 
   // required fixed64 clientid = 3;
-  if (cached_has_bits & 0x00000100u) {
+  if (cached_has_bits & 0x00000040u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFixed64ToArray(3, this->clientid(), target);
   }
 
   // optional uint32 gpuid = 4;
-  if (cached_has_bits & 0x00000200u) {
+  if (cached_has_bits & 0x00000080u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->gpuid(), target);
   }
 
@@ -3313,17 +3141,17 @@ void Share::SerializeWithCachedSizes(
   }
 
   // required uint32 time = 12;
-  if (cached_has_bits & 0x00000400u) {
+  if (cached_has_bits & 0x00000100u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(12, this->time(), target);
   }
 
   // required uint32 bits = 13;
-  if (cached_has_bits & 0x00000800u) {
+  if (cached_has_bits & 0x00000200u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(13, this->bits(), target);
   }
 
   // required uint32 nonce = 14;
-  if (cached_has_bits & 0x00001000u) {
+  if (cached_has_bits & 0x00000400u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(14, this->nonce(), target);
   }
 
@@ -3350,46 +3178,28 @@ void Share::SerializeWithCachedSizes(
   }
 
   // required uint32 height = 20;
-  if (cached_has_bits & 0x00002000u) {
+  if (cached_has_bits & 0x00000800u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(20, this->height(), target);
   }
 
   // required uint32 length = 21;
-  if (cached_has_bits & 0x00004000u) {
+  if (cached_has_bits & 0x00001000u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(21, this->length(), target);
   }
 
   // required uint32 chaintype = 22;
-  if (cached_has_bits & 0x00008000u) {
+  if (cached_has_bits & 0x00002000u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(22, this->chaintype(), target);
   }
 
   // required bool isblock = 23;
-  if (cached_has_bits & 0x00010000u) {
+  if (cached_has_bits & 0x00004000u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(23, this->isblock(), target);
   }
 
   // optional uint64 genvalue = 24;
-  if (cached_has_bits & 0x00020000u) {
+  if (cached_has_bits & 0x00008000u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(24, this->genvalue(), target);
-  }
-
-  // optional string bigNonce = 25;
-  if (cached_has_bits & 0x00000040u) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->bignonce().data(), static_cast<int>(this->bignonce().length()),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "pool.proto.Share.bigNonce");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        25, this->bignonce(), target);
-  }
-
-  // optional bytes proofOfWork = 26;
-  if (cached_has_bits & 0x00000080u) {
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        26, this->proofofwork(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -3502,7 +3312,7 @@ size_t Share::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         _internal_metadata_.unknown_fields());
   }
-  if (((_has_bits_[0] & 0x0001fd1f) ^ 0x0001fd1f) == 0) {  // All required fields are present.
+  if (((_has_bits_[0] & 0x00007f5f) ^ 0x00007f5f) == 0) {  // All required fields are present.
     // required string addr = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3567,29 +3377,13 @@ size_t Share::ByteSizeLong() const {
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
-  if (_has_bits_[0 / 32] & 224u) {
-    // optional string blockhash = 16;
-    if (has_blockhash()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->blockhash());
-    }
-
-    // optional string bigNonce = 25;
-    if (has_bignonce()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->bignonce());
-    }
-
-    // optional bytes proofOfWork = 26;
-    if (has_proofofwork()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->proofofwork());
-    }
-
+  // optional string blockhash = 16;
+  if (has_blockhash()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->blockhash());
   }
+
   // optional uint32 gpuid = 4;
   if (has_gpuid()) {
     total_size += 1 +
@@ -3658,46 +3452,36 @@ void Share::MergeFrom(const Share& from) {
       blockhash_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.blockhash_);
     }
     if (cached_has_bits & 0x00000040u) {
-      set_has_bignonce();
-      bignonce_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bignonce_);
-    }
-    if (cached_has_bits & 0x00000080u) {
-      set_has_proofofwork();
-      proofofwork_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.proofofwork_);
-    }
-  }
-  if (cached_has_bits & 65280u) {
-    if (cached_has_bits & 0x00000100u) {
       clientid_ = from.clientid_;
     }
-    if (cached_has_bits & 0x00000200u) {
+    if (cached_has_bits & 0x00000080u) {
       gpuid_ = from.gpuid_;
-    }
-    if (cached_has_bits & 0x00000400u) {
-      time_ = from.time_;
-    }
-    if (cached_has_bits & 0x00000800u) {
-      bits_ = from.bits_;
-    }
-    if (cached_has_bits & 0x00001000u) {
-      nonce_ = from.nonce_;
-    }
-    if (cached_has_bits & 0x00002000u) {
-      height_ = from.height_;
-    }
-    if (cached_has_bits & 0x00004000u) {
-      length_ = from.length_;
-    }
-    if (cached_has_bits & 0x00008000u) {
-      chaintype_ = from.chaintype_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
-  if (cached_has_bits & 196608u) {
-    if (cached_has_bits & 0x00010000u) {
+  if (cached_has_bits & 65280u) {
+    if (cached_has_bits & 0x00000100u) {
+      time_ = from.time_;
+    }
+    if (cached_has_bits & 0x00000200u) {
+      bits_ = from.bits_;
+    }
+    if (cached_has_bits & 0x00000400u) {
+      nonce_ = from.nonce_;
+    }
+    if (cached_has_bits & 0x00000800u) {
+      height_ = from.height_;
+    }
+    if (cached_has_bits & 0x00001000u) {
+      length_ = from.length_;
+    }
+    if (cached_has_bits & 0x00002000u) {
+      chaintype_ = from.chaintype_;
+    }
+    if (cached_has_bits & 0x00004000u) {
       isblock_ = from.isblock_;
     }
-    if (cached_has_bits & 0x00020000u) {
+    if (cached_has_bits & 0x00008000u) {
       genvalue_ = from.genvalue_;
     }
     _has_bits_[0] |= cached_has_bits;
@@ -3719,7 +3503,7 @@ void Share::CopyFrom(const Share& from) {
 }
 
 bool Share::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0001fd1f) != 0x0001fd1f) return false;
+  if ((_has_bits_[0] & 0x00007f5f) != 0x00007f5f) return false;
   return true;
 }
 
@@ -3740,10 +3524,6 @@ void Share::InternalSwap(Share* other) {
   multi_.Swap(&other->multi_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   blockhash_.Swap(&other->blockhash_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  bignonce_.Swap(&other->bignonce_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  proofofwork_.Swap(&other->proofofwork_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(clientid_, other->clientid_);
   swap(gpuid_, other->gpuid_);
@@ -4308,8 +4088,6 @@ const int ServerInfo::kHostFieldNumber;
 const int ServerInfo::kRouterFieldNumber;
 const int ServerInfo::kPubFieldNumber;
 const int ServerInfo::kTargetFieldNumber;
-const int ServerInfo::kVersionMajorFieldNumber;
-const int ServerInfo::kVersionMinorFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ServerInfo::ServerInfo()
@@ -4329,16 +4107,16 @@ ServerInfo::ServerInfo(const ServerInfo& from)
     host_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.host_);
   }
   ::memcpy(&router_, &from.router_,
-    static_cast<size_t>(reinterpret_cast<char*>(&versionminor_) -
-    reinterpret_cast<char*>(&router_)) + sizeof(versionminor_));
+    static_cast<size_t>(reinterpret_cast<char*>(&target_) -
+    reinterpret_cast<char*>(&router_)) + sizeof(target_));
   // @@protoc_insertion_point(copy_constructor:pool.proto.ServerInfo)
 }
 
 void ServerInfo::SharedCtor() {
   host_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&router_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&versionminor_) -
-      reinterpret_cast<char*>(&router_)) + sizeof(versionminor_));
+      reinterpret_cast<char*>(&target_) -
+      reinterpret_cast<char*>(&router_)) + sizeof(target_));
 }
 
 ServerInfo::~ServerInfo() {
@@ -4374,10 +4152,10 @@ void ServerInfo::Clear() {
   if (cached_has_bits & 0x00000001u) {
     host_.ClearNonDefaultToEmptyNoArena();
   }
-  if (cached_has_bits & 62u) {
+  if (cached_has_bits & 14u) {
     ::memset(&router_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&versionminor_) -
-        reinterpret_cast<char*>(&router_)) + sizeof(versionminor_));
+        reinterpret_cast<char*>(&target_) -
+        reinterpret_cast<char*>(&router_)) + sizeof(target_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -4451,34 +4229,6 @@ bool ServerInfo::MergePartialFromCodedStream(
         break;
       }
 
-      // optional uint32 versionMajor = 5;
-      case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
-          set_has_versionmajor();
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &versionmajor_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // optional uint32 versionMinor = 6;
-      case 6: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
-          set_has_versionminor();
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &versionminor_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -4531,16 +4281,6 @@ void ServerInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->target(), output);
   }
 
-  // optional uint32 versionMajor = 5;
-  if (cached_has_bits & 0x00000010u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->versionmajor(), output);
-  }
-
-  // optional uint32 versionMinor = 6;
-  if (cached_has_bits & 0x00000020u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(6, this->versionminor(), output);
-  }
-
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -4580,16 +4320,6 @@ void ServerInfo::SerializeWithCachedSizes(
   // required uint32 target = 4;
   if (cached_has_bits & 0x00000008u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->target(), target);
-  }
-
-  // optional uint32 versionMajor = 5;
-  if (cached_has_bits & 0x00000010u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->versionmajor(), target);
-  }
-
-  // optional uint32 versionMinor = 6;
-  if (cached_has_bits & 0x00000020u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->versionminor(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -4667,22 +4397,6 @@ size_t ServerInfo::ByteSizeLong() const {
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
-  if (_has_bits_[0 / 32] & 48u) {
-    // optional uint32 versionMajor = 5;
-    if (has_versionmajor()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->versionmajor());
-    }
-
-    // optional uint32 versionMinor = 6;
-    if (has_versionminor()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->versionminor());
-    }
-
-  }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -4711,7 +4425,7 @@ void ServerInfo::MergeFrom(const ServerInfo& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 63u) {
+  if (cached_has_bits & 15u) {
     if (cached_has_bits & 0x00000001u) {
       set_has_host();
       host_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.host_);
@@ -4724,12 +4438,6 @@ void ServerInfo::MergeFrom(const ServerInfo& from) {
     }
     if (cached_has_bits & 0x00000008u) {
       target_ = from.target_;
-    }
-    if (cached_has_bits & 0x00000010u) {
-      versionmajor_ = from.versionmajor_;
-    }
-    if (cached_has_bits & 0x00000020u) {
-      versionminor_ = from.versionminor_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -4765,8 +4473,6 @@ void ServerInfo::InternalSwap(ServerInfo* other) {
   swap(router_, other->router_);
   swap(pub_, other->pub_);
   swap(target_, other->target_);
-  swap(versionmajor_, other->versionmajor_);
-  swap(versionminor_, other->versionminor_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }

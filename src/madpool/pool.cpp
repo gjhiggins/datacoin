@@ -29,7 +29,7 @@ PrimeWorker::PrimeWorker(CWallet* pwallet, unsigned threadid, unsigned target)
     mWorkerCount = 0;
     mInvCount = 0;
 
-    mServerPort = gArgs.GetArg("-serverport", 11778) + 2*mThreadID;
+	mServerPort = gArgs.GetArg("-serverport", 60000) + 2*mThreadID;
     mSignalPort = mServerPort+1;
 
     mTarget = target;
@@ -785,11 +785,14 @@ void PoolServer::NotifyNewBlock(CBlockIndex* pindex) {
     proto::Block* block = sig.mutable_block();
     block->set_height(pindex->nHeight);
     block->set_hash(pindex->phashBlock->GetHex());
+    /*
     if (pindex->nHeight > 0) {
         block->set_prevhash(pindex->pprev->phashBlock->GetHex());
     } else {
         block->set_prevhash("0");
     }
+    */
+    block->set_prevhash(pindex->pprev->phashBlock->GetHex());
     block->set_reqdiff(0);
     block->set_minshare(mMinShare);
 
