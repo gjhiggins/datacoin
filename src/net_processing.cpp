@@ -2654,8 +2654,6 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         }
         bool fNewBlock = false;
         ProcessNewBlock(chainparams, pblock, forceProcessing, &fNewBlock);
-		
-        // NOTE: DATACOIN oldclient Ugly code support for fast initial synchronization from old clients
 
         pfrom->setAskFor.erase(pblock->GetHash());
         mapAlreadyAskedFor.erase(pblock->GetHash());

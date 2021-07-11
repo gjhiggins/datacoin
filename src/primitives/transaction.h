@@ -240,7 +240,7 @@ inline void UnserializeTransaction(TxType& tx, Stream& s) {
 template<typename Stream, typename TxType>
 inline void SerializeTransaction(const TxType& tx, Stream& s) {
     // TODO(gjh): DATACOIN segwit Disable the serialization of witness data until segwit is enabled.
-	const bool fAllowWitness = false;
+    const bool fAllowWitness = false;
     //const bool fAllowWitness = !(s.GetVersion() & SERIALIZE_TRANSACTION_NO_WITNESS);
 
     s << tx.nVersion;
@@ -366,7 +366,6 @@ public:
     }
 
     std::string ToString() const;
-    int64_t GetOpRetFee() const;
     void UpdateHash() const;
 
     bool HasWitness() const
@@ -414,10 +413,6 @@ struct CMutableTransaction
      * fly, as opposed to GetHash() in CTransaction, which uses a cached result.
      */
     uint256 GetHash() const;
-
-    /* TODO: test get of inscription fees
-     */
-    int64_t GetOpRetFee() const;
 
     friend bool operator==(const CMutableTransaction& a, const CMutableTransaction& b)
     {

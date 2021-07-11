@@ -64,7 +64,7 @@ public:
     {
         init();
     }
-	
+
     CBigNum(const CBigNum& b)
     {
         init();

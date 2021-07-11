@@ -90,7 +90,7 @@ public:
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 7 * 24 * 60 * 60; // a weeks
         consensus.nPowTargetSpacing = 60; // one-minute blocks
-        consensus.nCoinbaseMaturity = 100;
+        consensus.nCoinbaseMaturity = 3000;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
 
@@ -151,6 +151,7 @@ public:
         // nodes with support for servicebits filtering should be at the top
         // vSeeds.emplace_back("minkiz.co");
         vSeeds.emplace_back("144.76.118.44");
+        vSeeds.emplace_back("dtc.bytestamp.net");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,30);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,90);

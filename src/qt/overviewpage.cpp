@@ -157,7 +157,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
         // setup Plot
 
         // give the axes some labels:
-        ui->workplot->xAxis->setLabel("Last 7 days (4032 blocks)");
+        ui->workplot->xAxis->setLabel("Last 7 days (10080 blocks)");
         ui->workplot->yAxis->setLabel("Difficulty");
         ui->workplot->yAxis2->setLabel("Hash rate");
         ui->workplot->yAxis2->setVisible(true);
@@ -342,8 +342,9 @@ void OverviewPage::updatePlot(int count)
     // Double Check to make sure we don't try to update the plot when it is disabled
     if (!gArgs.GetBoolArg("-chart", DEFAULT_CHARTPLOTTING)) { return; }
 
-    int numLookBack = 4032;
+    int numLookBack = 10080;
     double diffMax = 0;
+    double diffMin = 100;
     double hashMax = 0;
     CBlockIndex* pindex = mapBlockIndex[chainActive.Tip()->GetBlockHash()];
 
@@ -373,6 +374,7 @@ void OverviewPage::updatePlot(int count)
         vY[i] = GetDifficulty(itr);
         vY2[i] = (double)GetNetworkHashPS(120, itr->nHeight).get_real();
         diffMax = std::max<double>(diffMax, vY[i]);
+        diffMin = std::min<double>(diffMin, vY[i]);
         hashMax = std::max<double>(hashMax, vY2[i]);
 
         itr = itr->pprev;
@@ -385,7 +387,7 @@ void OverviewPage::updatePlot(int count)
 
     // set axes ranges, so we see all data:
     ui->workplot->xAxis->setRange((double)xStart, (double)xEnd);
-    ui->workplot->yAxis->setRange(0, diffMax+(diffMax/10));
+    ui->workplot->yAxis->setRange(diffMin * 0.9999, diffMax * 1.0001);
     ui->workplot->yAxis2->setRange(0, hashMax+(hashMax/10));
 
     ui->workplot->replot();
